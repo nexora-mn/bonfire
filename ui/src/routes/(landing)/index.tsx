@@ -15,7 +15,7 @@ function Home() {
 	const { user } = Route.useRouteContext();
 
 	return (
-		<div className="bg-background text-foreground">
+		<div className="dark min-h-svh bg-background text-foreground">
 			<SiteHeader signedIn={!!user} />
 			<main>
 				<Hero />

@@ -13,10 +13,9 @@ const reassurances = [
 
 export function CallToAction() {
 	return (
-		<section id="get-started" className="scroll-mt-16 px-4 pt-24 pb-6 sm:px-6">
-			<div className="relative mx-auto grid max-w-7xl items-center gap-4 rounded-[2.5rem] bg-blush/60 px-6 pb-12 sm:px-12 sm:pb-16 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:py-16">
-				{/* The doodle leaps out of the top edge of the card. */}
-				<div className="-mt-20 lg:order-2 lg:-mt-40 lg:-mb-6">
+		<section id="get-started" className="scroll-mt-16 px-4 pt-12 pb-6 sm:px-6">
+			<div className="relative mx-auto grid max-w-7xl items-center gap-4 rounded-[2.5rem] bg-blush px-6 pt-6 pb-12 text-ink sm:px-12 sm:pb-16 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:py-16">
+				<div className="lg:order-2">
 					<Doodle
 						name="jumping"
 						className="mx-auto w-full max-w-md lg:max-w-none"
@@ -27,7 +26,7 @@ export function CallToAction() {
 					<h2 className="max-w-2xl font-heading text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.92] font-bold tracking-[-0.03em] text-balance">
 						{"Дуртай зүйл чинь үлдэгдэл цагаас илүүг хүртэх ёстой"}
 					</h2>
-					<p className="mt-6 max-w-lg text-lg text-foreground/75">
+					<p className="mt-6 max-w-lg text-lg text-ink/75">
 						{"Хуудсаа өнөө орой нээгээрэй. Хэн нэгэн дэмжих хүртэл үнэгүй."}
 					</p>
 					<Link
@@ -39,7 +38,7 @@ export function CallToAction() {
 					>
 						{"Хуудсаа нээх"}
 					</Link>
-					<ul className="mt-8 flex flex-col gap-3 text-foreground/80 sm:flex-row sm:flex-wrap sm:gap-x-6">
+					<ul className="mt-8 flex flex-col gap-3 text-ink/80 sm:flex-row sm:flex-wrap sm:gap-x-6">
 						{reassurances.map((item) => (
 							<li key={item} className="flex items-center gap-2">
 								<HugeiconsIcon

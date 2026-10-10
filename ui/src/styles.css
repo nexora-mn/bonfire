@@ -142,6 +142,8 @@
   --color-blush: oklch(0.885 0.062 18.334);
   --color-sage: oklch(0.87 0.05 170);
   --color-sky: oklch(0.86 0.05 235);
+  /* Fixed dark text for pastel surfaces, regardless of light/dark mode. */
+  --color-ink: oklch(0.147 0.004 49.3);
 }
 
 html {
@@ -167,7 +169,7 @@ html {
 
 .outline-numeral {
   color: transparent;
-  -webkit-text-stroke: 2px var(--primary);
+  -webkit-text-stroke: 2px var(--color-flame);
 }
 
 /* Hero: film grain, pointer parallax (--mx/--my set from JS), floating tiles. */

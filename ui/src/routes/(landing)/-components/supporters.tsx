@@ -20,7 +20,9 @@ const points = [
 export function Supporters() {
 	return (
 		<section className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
-			<Doodle name="loving" className="mx-auto w-full max-w-xl lg:order-2" />
+			<div className="mx-auto w-full max-w-xl rounded-[2.5rem] bg-blush p-6 lg:order-2">
+				<Doodle name="loving" className="w-full" />
+			</div>
 			<div>
 				<h2 className="max-w-xl font-heading text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] font-bold tracking-[-0.03em]">
 					{"Дэмжигчдэд чинь энгийн"}

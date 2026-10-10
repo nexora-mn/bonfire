@@ -18,25 +18,25 @@ const passions: Passion[] = [
 		title: "Хөгжим",
 		line: "Шөнийн 2 цагт дуусгасан дуу, ковер, бичлэгүүд.",
 		doodle: "dancing",
-		tint: "bg-sky/60",
+		tint: "bg-sky",
 	},
 	{
 		title: "Бүжиг",
 		line: "Бүжиг дэглэлт, хичээл, дасгалын бичлэг.",
 		doodle: "ballet",
-		tint: "bg-flame/35",
+		tint: "bg-flame",
 	},
 	{
 		title: "Зураг ба видео",
 		line: "Влог, хальсан зураг, нам гүм хөрөг.",
 		doodle: "selfie",
-		tint: "bg-sage/60",
+		tint: "bg-sage",
 	},
 	{
 		title: "Ургамал",
 		line: "Суулгац, арчилгааны зөвлөгөө, гэрийн ногоон булан.",
 		doodle: "plant",
-		tint: "bg-blush/60",
+		tint: "bg-blush",
 	},
 	{
 		title: "Хоол, ундаа",
@@ -48,19 +48,19 @@ const passions: Passion[] = [
 		title: "Тэжээвэр амьтан",
 		line: "Сургалтын зөвлөгөө, хамгийн хөөрхөн нохойнууд.",
 		doodle: "doggie",
-		tint: "bg-sage/60",
+		tint: "bg-sage",
 	},
 	{
 		title: "Йог ба эрүүл мэнд",
 		line: "Өглөөний дасгал, тайван үдэш.",
 		doodle: "meditating",
-		tint: "bg-flame/35",
+		tint: "bg-flame",
 	},
 	{
 		title: "Тэшүүр ба спорт",
 		line: "Трик, маршрут, амралтын өдрийн дасгал.",
 		doodle: "roller-skating",
-		tint: "bg-sky/60",
+		tint: "bg-sky",
 	},
 ];
 
@@ -77,7 +77,7 @@ export function PassionWall() {
 				{passions.map((passion) => (
 					<li
 						key={passion.title}
-						className={`group overflow-hidden rounded-[2rem] p-6 ${passion.tint}`}
+						className={`group overflow-hidden rounded-[2rem] p-6 text-ink ${passion.tint}`}
 					>
 						<Doodle
 							name={passion.doodle}
@@ -86,7 +86,7 @@ export function PassionWall() {
 						<h3 className="mt-2 font-heading text-2xl font-bold tracking-tight sm:text-3xl">
 							{passion.title}
 						</h3>
-						<p className="mt-1 text-foreground/70">{passion.line}</p>
+						<p className="mt-1 text-ink/70">{passion.line}</p>
 					</li>
 				))}
 			</ul>

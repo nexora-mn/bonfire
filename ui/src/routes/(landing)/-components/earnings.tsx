@@ -23,13 +23,16 @@ export function Earnings() {
 	const monthly = supporters * price * (1 - FEE);
 
 	return (
-		<section id="earnings" className="scroll-mt-20 bg-flame/45 py-20 lg:py-28">
+		<section
+			id="earnings"
+			className="scroll-mt-20 bg-flame py-20 text-ink lg:py-28"
+		>
 			<div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
 				<div>
-					<h2 className="font-heading text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] font-bold tracking-[-0.03em] text-foreground">
+					<h2 className="font-heading text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] font-bold tracking-[-0.03em]">
 						{"Таны оройнууд хэдийг олж чадах вэ?"}
 					</h2>
-					<p className="mt-6 max-w-lg text-lg text-foreground/80">
+					<p className="mt-6 max-w-lg text-lg text-ink/80">
 						{
 							"Асар олон дагагч хэрэггүй. Санаа тавьдаг хэдэн арван хүн л материал, студийн цаг, шинэ линзний зардлыг чинь нөхөхөд хангалттай."
 						}
@@ -37,7 +40,7 @@ export function Earnings() {
 					<Doodle name="float" className="mt-6 w-full max-w-md" />
 				</div>
 
-				<div className="rounded-[2rem] border-2 border-foreground bg-background p-6 shadow-[8px_8px_0_var(--foreground)] sm:p-8">
+				<div className="rounded-[2rem] bg-background p-6 text-foreground sm:p-8">
 					<div className="flex items-baseline justify-between gap-4">
 						<label htmlFor={sliderId} className="font-medium text-foreground">
 							{"Дэмжигчид"}
@@ -82,7 +85,10 @@ export function Earnings() {
 						</div>
 					</fieldset>
 
-					<div className="mt-8 rounded-2xl bg-blush/45 p-5" aria-live="polite">
+					<div
+						className="mt-8 rounded-2xl bg-primary/20 p-5"
+						aria-live="polite"
+					>
 						<p className="text-sm text-foreground/70">
 							{"Таны гарт орох дүн ойролцоогоор"}
 						</p>
