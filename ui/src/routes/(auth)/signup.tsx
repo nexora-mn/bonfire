@@ -5,8 +5,8 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { AuthForm } from "./-components/auth-form";
 import { signUp } from "@/lib/auth";
+import { AuthForm } from "./-components/auth-form";
 
 export const Route = createFileRoute("/(auth)/signup")({
 	beforeLoad: ({ context }) => {

@@ -5,8 +5,8 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { z } from "zod";
-import { AuthForm } from "./-components/auth-form";
 import { signIn } from "@/lib/auth";
+import { AuthForm } from "./-components/auth-form";
 
 export const Route = createFileRoute("/(auth)/login")({
 	validateSearch: z.object({
@@ -20,8 +20,10 @@ export const Route = createFileRoute("/(auth)/login")({
 });
 
 const errorMessages: Record<string, string> = {
-	confirmation_failed: "Баталгаажуулах холбоос буруу эсвэл хугацаа нь дууссан байна.",
-	oauth_failed: "Google эсвэл Discord-оор нэвтэрч чадсангүй. Дахин оролдоно уу.",
+	confirmation_failed:
+		"Баталгаажуулах холбоос буруу эсвэл хугацаа нь дууссан байна.",
+	oauth_failed:
+		"Google эсвэл Discord-оор нэвтэрч чадсангүй. Дахин оролдоно уу.",
 };
 
 function Login() {

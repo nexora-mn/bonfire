@@ -9,16 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as wwwRouteRouteImport } from './routes/(www)/route'
+import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authSignupRouteImport } from './routes/(auth)/signup'
-import { Route as landingIndexRouteImport } from './routes/(landing)/index'
-import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
+import { Route as wwwIndexRouteImport } from './routes/(www)/index'
+import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
 import { Route as authAuthConfirmRouteImport } from './routes/(auth)/auth/confirm'
+import { Route as wwwAiIndexRouteImport } from './routes/(www)/ai/index'
+import { Route as wwwBlogIndexRouteImport } from './routes/(www)/blog/index'
+import { Route as wwwBlogSlugRouteImport } from './routes/(www)/blog/$slug'
+import { Route as wwwQrCodeIndexRouteImport } from './routes/(www)/qr-code/index'
+import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedDashboardProfileRouteImport } from './routes/_authed/dashboard/profile'
 import { Route as authAuthOauthProviderRouteImport } from './routes/(auth)/auth/oauth.$provider'
 
-const AuthedRoute = AuthedRouteImport.update({
+const wwwRouteRoute = wwwRouteRouteImport.update({
+  id: '/(www)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRouteRoute = AuthedRouteRouteImport.update({
   id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authLoginRoute = authLoginRouteImport.update({
@@ -31,20 +54,50 @@ const authSignupRoute = authSignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const landingIndexRoute = landingIndexRouteImport.update({
-  id: '/(landing)/',
+const wwwIndexRoute = wwwIndexRouteImport.update({
+  id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => wwwRouteRoute,
 } as any)
-const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
+const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AuthedRoute,
+  getParentRoute: () => AuthedRouteRoute,
 } as any)
 const authAuthConfirmRoute = authAuthConfirmRouteImport.update({
   id: '/(auth)/auth/confirm',
   path: '/auth/confirm',
   getParentRoute: () => rootRouteImport,
+} as any)
+const wwwAiIndexRoute = wwwAiIndexRouteImport.update({
+  id: '/ai/',
+  path: '/ai/',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
+const wwwBlogIndexRoute = wwwBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
+const wwwBlogSlugRoute = wwwBlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
+const wwwQrCodeIndexRoute = wwwQrCodeIndexRouteImport.update({
+  id: '/qr-code/',
+  path: '/qr-code/',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
+const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedDashboardRouteRoute,
+} as any)
+const AuthedDashboardProfileRoute = AuthedDashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthedDashboardRouteRoute,
 } as any)
 const authAuthOauthProviderRoute = authAuthOauthProviderRouteImport.update({
   id: '/(auth)/auth/oauth/$provider',
@@ -53,75 +106,146 @@ const authAuthOauthProviderRoute = authAuthOauthProviderRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof landingIndexRoute
+  '/': typeof wwwIndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/login': typeof authLoginRoute
   '/signup': typeof authSignupRoute
-  '/dashboard': typeof AuthedDashboardRoute
   '/auth/confirm': typeof authAuthConfirmRoute
+  '/blog/$slug': typeof wwwBlogSlugRoute
+  '/dashboard/profile': typeof AuthedDashboardProfileRoute
+  '/ai/': typeof wwwAiIndexRoute
+  '/blog/': typeof wwwBlogIndexRoute
+  '/qr-code/': typeof wwwQrCodeIndexRoute
+  '/dashboard/': typeof AuthedDashboardIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof landingIndexRoute
+  '/': typeof wwwIndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/login': typeof authLoginRoute
   '/signup': typeof authSignupRoute
-  '/dashboard': typeof AuthedDashboardRoute
   '/auth/confirm': typeof authAuthConfirmRoute
+  '/blog/$slug': typeof wwwBlogSlugRoute
+  '/dashboard/profile': typeof AuthedDashboardProfileRoute
+  '/ai': typeof wwwAiIndexRoute
+  '/blog': typeof wwwBlogIndexRoute
+  '/qr-code': typeof wwwQrCodeIndexRoute
+  '/dashboard': typeof AuthedDashboardIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_authed': typeof AuthedRouteWithChildren
+  '/(www)': typeof wwwRouteRouteWithChildren
+  '/_authed': typeof AuthedRouteRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/signup': typeof authSignupRoute
-  '/_authed/dashboard': typeof AuthedDashboardRoute
-  '/(landing)/': typeof landingIndexRoute
+  '/(www)/': typeof wwwIndexRoute
   '/(auth)/auth/confirm': typeof authAuthConfirmRoute
+  '/(www)/blog/$slug': typeof wwwBlogSlugRoute
+  '/_authed/dashboard/profile': typeof AuthedDashboardProfileRoute
+  '/(www)/ai/': typeof wwwAiIndexRoute
+  '/(www)/blog/': typeof wwwBlogIndexRoute
+  '/(www)/qr-code/': typeof wwwQrCodeIndexRoute
+  '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
   '/(auth)/auth/oauth/$provider': typeof authAuthOauthProviderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/dashboard'
     | '/login'
     | '/signup'
-    | '/dashboard'
     | '/auth/confirm'
+    | '/blog/$slug'
+    | '/dashboard/profile'
+    | '/ai/'
+    | '/blog/'
+    | '/qr-code/'
+    | '/dashboard/'
     | '/auth/oauth/$provider'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/login'
     | '/signup'
-    | '/dashboard'
     | '/auth/confirm'
+    | '/blog/$slug'
+    | '/dashboard/profile'
+    | '/ai'
+    | '/blog'
+    | '/qr-code'
+    | '/dashboard'
     | '/auth/oauth/$provider'
   id:
     | '__root__'
+    | '/(www)'
     | '/_authed'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/_authed/dashboard'
     | '/(auth)/login'
     | '/(auth)/signup'
-    | '/_authed/dashboard'
-    | '/(landing)/'
+    | '/(www)/'
     | '/(auth)/auth/confirm'
+    | '/(www)/blog/$slug'
+    | '/_authed/dashboard/profile'
+    | '/(www)/ai/'
+    | '/(www)/blog/'
+    | '/(www)/qr-code/'
+    | '/_authed/dashboard/'
     | '/(auth)/auth/oauth/$provider'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthedRoute: typeof AuthedRouteWithChildren
+  wwwRouteRoute: typeof wwwRouteRouteWithChildren
+  AuthedRouteRoute: typeof AuthedRouteRouteWithChildren
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   authLoginRoute: typeof authLoginRoute
   authSignupRoute: typeof authSignupRoute
-  landingIndexRoute: typeof landingIndexRoute
   authAuthConfirmRoute: typeof authAuthConfirmRoute
   authAuthOauthProviderRoute: typeof authAuthOauthProviderRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(www)': {
+      id: '/(www)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof wwwRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed': {
       id: '/_authed'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AuthedRouteImport
+      preLoaderRoute: typeof AuthedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/login': {
@@ -138,19 +262,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(landing)/': {
-      id: '/(landing)/'
+    '/(www)/': {
+      id: '/(www)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof landingIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof wwwIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
     }
     '/_authed/dashboard': {
       id: '/_authed/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthedDashboardRouteImport
-      parentRoute: typeof AuthedRoute
+      preLoaderRoute: typeof AuthedDashboardRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
     }
     '/(auth)/auth/confirm': {
       id: '/(auth)/auth/confirm'
@@ -158,6 +282,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/confirm'
       preLoaderRoute: typeof authAuthConfirmRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(www)/ai/': {
+      id: '/(www)/ai/'
+      path: '/ai'
+      fullPath: '/ai/'
+      preLoaderRoute: typeof wwwAiIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
+    '/(www)/blog/': {
+      id: '/(www)/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof wwwBlogIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
+    '/(www)/blog/$slug': {
+      id: '/(www)/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof wwwBlogSlugRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
+    '/(www)/qr-code/': {
+      id: '/(www)/qr-code/'
+      path: '/qr-code'
+      fullPath: '/qr-code/'
+      preLoaderRoute: typeof wwwQrCodeIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
+    '/_authed/dashboard/': {
+      id: '/_authed/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthedDashboardIndexRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
+    }
+    '/_authed/dashboard/profile': {
+      id: '/_authed/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof AuthedDashboardProfileRouteImport
+      parentRoute: typeof AuthedDashboardRouteRoute
     }
     '/(auth)/auth/oauth/$provider': {
       id: '/(auth)/auth/oauth/$provider'
@@ -169,22 +335,58 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthedRouteChildren {
-  AuthedDashboardRoute: typeof AuthedDashboardRoute
+interface wwwRouteRouteChildren {
+  wwwIndexRoute: typeof wwwIndexRoute
+  wwwBlogSlugRoute: typeof wwwBlogSlugRoute
+  wwwAiIndexRoute: typeof wwwAiIndexRoute
+  wwwBlogIndexRoute: typeof wwwBlogIndexRoute
+  wwwQrCodeIndexRoute: typeof wwwQrCodeIndexRoute
 }
 
-const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedDashboardRoute: AuthedDashboardRoute,
+const wwwRouteRouteChildren: wwwRouteRouteChildren = {
+  wwwIndexRoute: wwwIndexRoute,
+  wwwBlogSlugRoute: wwwBlogSlugRoute,
+  wwwAiIndexRoute: wwwAiIndexRoute,
+  wwwBlogIndexRoute: wwwBlogIndexRoute,
+  wwwQrCodeIndexRoute: wwwQrCodeIndexRoute,
 }
 
-const AuthedRouteWithChildren =
-  AuthedRoute._addFileChildren(AuthedRouteChildren)
+const wwwRouteRouteWithChildren = wwwRouteRoute._addFileChildren(
+  wwwRouteRouteChildren,
+)
+
+interface AuthedDashboardRouteRouteChildren {
+  AuthedDashboardProfileRoute: typeof AuthedDashboardProfileRoute
+  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
+}
+
+const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
+  AuthedDashboardProfileRoute: AuthedDashboardProfileRoute,
+  AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
+}
+
+const AuthedDashboardRouteRouteWithChildren =
+  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
+
+interface AuthedRouteRouteChildren {
+  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
+}
+
+const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
+  AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
+}
+
+const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
+  AuthedRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthedRoute: AuthedRouteWithChildren,
+  wwwRouteRoute: wwwRouteRouteWithChildren,
+  AuthedRouteRoute: AuthedRouteRouteWithChildren,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   authLoginRoute: authLoginRoute,
   authSignupRoute: authSignupRoute,
-  landingIndexRoute: landingIndexRoute,
   authAuthConfirmRoute: authAuthConfirmRoute,
   authAuthOauthProviderRoute: authAuthOauthProviderRoute,
 }

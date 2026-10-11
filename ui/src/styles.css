@@ -1,8 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/onest";
-@import "@fontsource/pangolin";
+@import "@fontsource-variable/exo-2";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,136 +42,124 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --font-heading: var(--font-sans);
-  --font-sans: "Pangolin", "Onest Variable", sans-serif;
+  /* Exo 2 everywhere; variable, so every weight is real. Covers Cyrillic. */
+  --font-sans: "Exo 2 Variable", sans-serif;
+  --font-hand: var(--font-sans);
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-ember: var(--primary);
+  /* Brand color: amber with a red hint. */
+  --color-flame: oklch(0.76 0.18 55);
+  /* Bright tints for doodle cards; doodles are inked, so they stay light. */
+  --color-spark: oklch(0.9 0.15 95);
+  --color-amber: oklch(0.82 0.16 72);
+  --color-glow: oklch(0.87 0.09 62);
+  --color-coral: oklch(0.75 0.15 30);
+  /* Warm off-white with an amber tint, to sit with the brand color. */
+  --color-cream: oklch(0.97 0.025 78);
+  /* Fixed dark text for colored surfaces, regardless of light/dark mode. */
+  --color-ink: oklch(0.17 0.02 40);
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.3);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.3);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.147 0.004 49.3);
-  --primary: oklch(0.505 0.213 27.518);
-  --primary-foreground: oklch(0.971 0.013 17.38);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.96 0.002 17.2);
-  --muted-foreground: oklch(0.547 0.021 43.1);
-  --accent: oklch(0.96 0.002 17.2);
-  --accent-foreground: oklch(0.214 0.009 43.1);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 34.3);
-  --input: oklch(0.922 0.005 34.3);
-  --ring: oklch(0.714 0.014 41.2);
-  --chart-1: oklch(0.879 0.169 91.605);
-  --chart-2: oklch(0.769 0.188 70.08);
-  --chart-3: oklch(0.666 0.179 58.318);
-  --chart-4: oklch(0.555 0.163 48.998);
-  --chart-5: oklch(0.473 0.137 46.201);
+/* Light: warm ash-white paper with charcoal ink and an ember accent. */
+:root,
+/* Light scope inside dark pages, used by cream bands and cards. */
+.light {
+  --background: oklch(0.985 0.008 75);
+  --foreground: oklch(0.18 0.02 40);
+  --card: oklch(0.995 0.005 75);
+  --card-foreground: oklch(0.18 0.02 40);
+  --popover: oklch(0.995 0.005 75);
+  --popover-foreground: oklch(0.18 0.02 40);
+  --primary: oklch(0.58 0.2 38);
+  --primary-foreground: oklch(0.985 0.015 75);
+  --secondary: oklch(0.95 0.018 65);
+  --secondary-foreground: oklch(0.25 0.03 40);
+  --muted: oklch(0.95 0.018 65);
+  --muted-foreground: oklch(0.5 0.03 45);
+  --accent: oklch(0.95 0.018 65);
+  --accent-foreground: oklch(0.25 0.04 40);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.9 0.015 60);
+  --input: oklch(0.9 0.015 60);
+  --ring: oklch(0.7 0.14 50);
+  /* Fire ramp: yellow tip down to deep ember. */
+  --chart-1: oklch(0.88 0.15 92);
+  --chart-2: oklch(0.8 0.16 70);
+  --chart-3: oklch(0.72 0.18 52);
+  --chart-4: oklch(0.62 0.2 38);
+  --chart-5: oklch(0.5 0.18 30);
   --radius: 0.625rem;
-  --sidebar: oklch(0.986 0.002 67.8);
-  --sidebar-foreground: oklch(0.147 0.004 49.3);
-  --sidebar-primary: oklch(0.577 0.245 27.325);
-  --sidebar-primary-foreground: oklch(0.971 0.013 17.38);
-  --sidebar-accent: oklch(0.96 0.002 17.2);
-  --sidebar-accent-foreground: oklch(0.214 0.009 43.1);
-  --sidebar-border: oklch(0.922 0.005 34.3);
-  --sidebar-ring: oklch(0.714 0.014 41.2);
+  /* Same surface as cards and the dashboard top bar. */
+  --sidebar: var(--card);
+  --sidebar-foreground: oklch(0.18 0.02 40);
+  --sidebar-primary: oklch(0.58 0.2 38);
+  --sidebar-primary-foreground: oklch(0.985 0.015 75);
+  --sidebar-accent: oklch(0.95 0.018 65);
+  --sidebar-accent-foreground: oklch(0.25 0.04 40);
+  --sidebar-border: oklch(0.9 0.015 60);
+  --sidebar-ring: oklch(0.7 0.14 50);
 }
 
+/*
+ * Dark: burnt-wood charcoal lit by glowing embers. Three steps, all hue 40:
+ * background 0.155 → surfaces (card, popover, sidebar) 0.21 → fills
+ * (secondary, muted, accent) 0.26.
+ */
 .dark {
-  --background: oklch(0.147 0.004 49.3);
-  --foreground: oklch(0.986 0.002 67.8);
-  --card: oklch(0.214 0.009 43.1);
-  --card-foreground: oklch(0.986 0.002 67.8);
-  --popover: oklch(0.214 0.009 43.1);
-  --popover-foreground: oklch(0.986 0.002 67.8);
-  --primary: oklch(0.444 0.177 26.899);
-  --primary-foreground: oklch(0.971 0.013 17.38);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.268 0.011 36.5);
-  --muted-foreground: oklch(0.714 0.014 41.2);
-  --accent: oklch(0.268 0.011 36.5);
-  --accent-foreground: oklch(0.986 0.002 67.8);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.547 0.021 43.1);
-  --chart-1: oklch(0.879 0.169 91.605);
-  --chart-2: oklch(0.769 0.188 70.08);
-  --chart-3: oklch(0.666 0.179 58.318);
-  --chart-4: oklch(0.555 0.163 48.998);
-  --chart-5: oklch(0.473 0.137 46.201);
-  --sidebar: oklch(0.214 0.009 43.1);
-  --sidebar-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-primary: oklch(0.637 0.237 25.331);
-  --sidebar-primary-foreground: oklch(0.971 0.013 17.38);
-  --sidebar-accent: oklch(0.268 0.011 36.5);
-  --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.547 0.021 43.1);
+  --background: oklch(0.155 0.014 40);
+  --foreground: oklch(0.96 0.018 75);
+  --card: oklch(0.21 0.022 40);
+  --card-foreground: oklch(0.96 0.018 75);
+  --popover: oklch(0.21 0.022 40);
+  --popover-foreground: oklch(0.96 0.018 75);
+  --primary: oklch(0.66 0.2 40);
+  --primary-foreground: oklch(0.155 0.014 40);
+  --secondary: oklch(0.26 0.022 40);
+  --secondary-foreground: oklch(0.96 0.018 75);
+  --muted: oklch(0.26 0.022 40);
+  --muted-foreground: oklch(0.72 0.03 60);
+  --accent: oklch(0.26 0.022 40);
+  --accent-foreground: oklch(0.96 0.018 75);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(0.96 0.03 60 / 10%);
+  --input: oklch(0.96 0.03 60 / 15%);
+  --ring: oklch(0.6 0.15 45);
+  --chart-1: oklch(0.88 0.15 92);
+  --chart-2: oklch(0.8 0.16 70);
+  --chart-3: oklch(0.72 0.18 52);
+  --chart-4: oklch(0.62 0.2 38);
+  --chart-5: oklch(0.5 0.18 30);
+  --sidebar: var(--card);
+  --sidebar-foreground: oklch(0.96 0.018 75);
+  --sidebar-primary: oklch(0.66 0.2 40);
+  --sidebar-primary-foreground: oklch(0.155 0.014 40);
+  --sidebar-accent: oklch(0.26 0.022 40);
+  --sidebar-accent-foreground: oklch(0.96 0.018 75);
+  --sidebar-border: oklch(0.96 0.03 60 / 10%);
+  --sidebar-ring: oklch(0.6 0.15 45);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
-    /* Pangolin ships one weight; faked bold smears its strokes. */
-    font-synthesis-weight: none;
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
-/* Bonfire supporting palette, built around the preset's red primary and amber chart scale. */
-@theme inline {
-  --color-ember: var(--primary);
-  --color-flame: var(--chart-1);
-  --color-amber: var(--chart-2);
-  --color-ochre: var(--chart-3);
-  --color-cream: var(--primary-foreground);
-  --color-blush: oklch(0.885 0.062 18.334);
-  --color-sage: oklch(0.87 0.05 170);
-  --color-sky: oklch(0.86 0.05 235);
-  /* Fixed dark text for pastel surfaces, regardless of light/dark mode. */
-  --color-ink: oklch(0.147 0.004 49.3);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-.marquee {
-  animation: marquee 40s linear infinite;
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.outline-numeral {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-flame);
-}
-
-/* Hero: film grain, pointer parallax (--mx/--my set from JS), floating tiles. */
+/* Film grain overlay; the element needs `relative isolate`. */
 .grain::before {
   content: "";
   position: absolute;
@@ -184,63 +171,35 @@ html {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.parallax {
-  transform: translate3d(
-      calc(var(--mx, 0) * var(--depth, 0) * 1px),
-      calc(var(--my, 0) * var(--depth, 0) * 1px),
-      0
-    )
-    rotate(var(--rot, 0deg));
-  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.bob {
-  animation: bob 6s ease-in-out infinite;
-}
-
-@keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-12px) rotate(2deg);
-  }
-}
-
-.spin-slow {
-  animation: spin 24s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.ember-glow {
-  animation: ember 3.5s ease-in-out infinite alternate;
-}
-
-@keyframes ember {
-  from {
-    opacity: 0.5;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 0.8;
-    transform: scale(1.04);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .marquee,
-  .bob,
-  .spin-slow,
-  .ember-glow {
-    animation: none;
+  html {
+    scroll-behavior: auto;
   }
-  .parallax {
-    transition: none;
-  }
+}
+
+/* Editorial display type: heavy, tight, and large. */
+@utility display-1 {
+  font-family: var(--font-heading);
+  font-size: clamp(3.25rem, 9.5vw, 8.5rem);
+  line-height: 0.88;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility display-2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.92;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+@utility display-3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
