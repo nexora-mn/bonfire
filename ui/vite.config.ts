@@ -17,10 +17,7 @@ export default defineConfig(({ mode }) => {
       // Tracing keeps Sentry external, so the app shares the instance that
       // instrument.server.mjs set up via `node --import`, and copies it into
       // .output so the server runs without the repo's node_modules.
-      nitro({
-        traceDeps: ["@sentry/tanstackstart-react*"],
-        rolldownConfig: { external: [/^@sentry\//] },
-      }),
+      nitro(),
       tailwindcss(),
       tanstackStart(),
       viteReact(),
