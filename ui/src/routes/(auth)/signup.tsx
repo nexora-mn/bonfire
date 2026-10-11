@@ -5,18 +5,20 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
+import { useRefresh } from "@/hooks/use-refresh";
 import { signUp } from "@/lib/auth";
 import { AuthForm } from "./-components/auth-form";
 
 export const Route = createFileRoute("/(auth)/signup")({
 	beforeLoad: ({ context }) => {
-		if (context.user) throw redirect({ to: "/dashboard" });
+		if (context.user) throw redirect({ to: "/home" });
 	},
 	component: Signup,
 });
 
 function Signup() {
 	const router = useRouter();
+	const refresh = useRefresh();
 	const [notice, setNotice] = useState<string | null>(null);
 
 	return (
@@ -34,8 +36,8 @@ function Signup() {
 					setNotice("Баталгаажуулах холбоосыг имэйлээсээ шалгана уу.");
 					return null;
 				}
-				await router.invalidate();
-				await router.navigate({ to: "/dashboard" });
+				await refresh();
+				await router.navigate({ to: "/home" });
 				return null;
 			}}
 			footer={

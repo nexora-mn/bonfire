@@ -1,14 +1,17 @@
 import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { shareImageUrl } from "#/lib/sanity";
-import { absoluteUrl, jsonLd, SITE_NAME, seo } from "#/lib/seo";
 import { Container } from "@/components/container";
+import { SITE_NAME } from "@/lib/constants";
+import { shareImageUrl } from "@/lib/sanity";
+import { jsonLd, seo } from "@/lib/seo";
+import { formatIsoDate } from "@/lib/utils/date";
+import { absoluteUrl } from "@/lib/utils/url";
 import { PostBody } from "./-components/post-body";
 import { PostCard } from "./-components/post-card";
 import { PostImage } from "./-components/post-image";
 import { PostNotFound } from "./-components/post-not-found";
-import { fetchPost, formatPostDate } from "./-components/posts";
+import { fetchPost } from "./-components/posts";
 
 export const Route = createFileRoute("/(www)/blog/$slug")({
 	loader: ({ params }) => fetchPost({ data: { slug: params.slug } }),
@@ -84,7 +87,7 @@ function BlogPost() {
 						<span className="rounded-full bg-flame px-3 py-1 font-medium text-ink">
 							{post.category}
 						</span>
-						<time dateTime={post.date}>{formatPostDate(post.date)}</time>
+						<time dateTime={post.date}>{formatIsoDate(post.date)}</time>
 						<span aria-hidden="true">·</span>
 						<span>{`${post.readMinutes} минут унших`}</span>
 					</p>

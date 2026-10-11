@@ -1,7 +1,14 @@
 import type { AuthError } from "@supabase/supabase-js";
+import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
+import { SESSION_STALE_TIME } from "./constants";
+import {
+	credentialsSchema,
+	passwordSchema,
+	profileSchema,
+} from "./schemas/auth";
 import { getSupabaseServerClient } from "./supabase/server";
 
 export type AuthUser = {
@@ -34,6 +41,12 @@ export const fetchUser = createServerFn({ method: "GET" }).handler(
 	},
 );
 
+export const userQuery = queryOptions({
+	queryKey: ["user"],
+	queryFn: () => fetchUser(),
+	staleTime: SESSION_STALE_TIME,
+});
+
 const authErrorMessages: Record<string, string> = {
 	invalid_credentials: "Имэйл эсвэл нууц үг буруу байна.",
 	email_not_confirmed: "Имэйлээ баталгаажуулаагүй байна. Имэйлээ шалгана уу.",
@@ -56,11 +69,6 @@ function authErrorMessage(error: AuthError) {
 		"Алдаа гарлаа. Дахин оролдоно уу."
 	);
 }
-
-const credentialsSchema = z.object({
-	email: z.email(),
-	password: z.string().min(6),
-});
 
 export const signIn = createServerFn({ method: "POST" })
 	.validator(credentialsSchema)
@@ -97,7 +105,7 @@ export const signOut = createServerFn({ method: "POST" })
 	});
 
 export const updateProfile = createServerFn({ method: "POST" })
-	.validator(z.object({ name: z.string().trim().min(1).max(80) }))
+	.validator(profileSchema)
 	.handler(async ({ data }) => {
 		const supabase = getSupabaseServerClient();
 		const { error } = await supabase.auth.updateUser({
@@ -108,7 +116,7 @@ export const updateProfile = createServerFn({ method: "POST" })
 	});
 
 export const updatePassword = createServerFn({ method: "POST" })
-	.validator(credentialsSchema.pick({ password: true }))
+	.validator(passwordSchema)
 	.handler(async ({ data }) => {
 		const supabase = getSupabaseServerClient();
 		const { error } = await supabase.auth.updateUser({

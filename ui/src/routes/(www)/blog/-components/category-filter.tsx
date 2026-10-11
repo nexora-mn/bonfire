@@ -4,7 +4,7 @@ import { cn } from "cn";
 const pill =
 	"rounded-full px-4 py-2 text-sm font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none";
 
-/** Category pills; the choice lives in the `?category=` search param. */
+/** The choice lives in `?category=`. */
 export function CategoryFilter({
 	categories,
 	active,

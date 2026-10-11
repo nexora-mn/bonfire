@@ -3,7 +3,6 @@ export const themes = ["light", "dark", "system"] as const;
 export type Theme = (typeof themes)[number];
 
 const storageKey = "theme";
-const darkQuery = "(prefers-color-scheme: dark)";
 
 export function getStoredTheme(): Theme {
 	try {
@@ -14,32 +13,31 @@ export function getStoredTheme(): Theme {
 	}
 }
 
-/** Toggles `.dark` on <html>; marketing pages force their own `.dark` scope. */
-export function applyTheme(theme: Theme) {
-	const dark =
-		theme === "dark" ||
-		(theme === "system" && window.matchMedia(darkQuery).matches);
-	document.documentElement.classList.toggle("dark", dark);
-	document.documentElement.style.colorScheme = dark ? "dark" : "light";
-}
-
+/** Marketing pages force their own `.dark` scope, so this only affects the app. */
 export function setTheme(theme: Theme) {
 	try {
 		localStorage.setItem(storageKey, theme);
 	} catch {}
-	applyTheme(theme);
+	const dark =
+		theme === "dark" ||
+		(theme === "system" &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches);
+	document.documentElement.classList.toggle("dark", dark);
+	document.documentElement.style.colorScheme = dark ? "dark" : "light";
 }
 
 /**
- * Runs in <head> before first paint so the stored theme never flashes,
- * and keeps "system" in step with the OS for the life of the page.
+ * Runs in <head> before first paint so the stored theme never flashes, and
+ * keeps "system" in step with the OS. Kept as a literal string: stringifying
+ * a function gives different text on the server and in the browser, which
+ * breaks hydration.
  */
-export const themeScript = `(${String(() => {
+export const themeScript = `(() => {
 	const query = window.matchMedia("(prefers-color-scheme: dark)");
 	const apply = () => {
 		let theme = "system";
 		try {
-			theme = localStorage.getItem("theme") ?? "system";
+			theme = localStorage.getItem("${storageKey}") ?? "system";
 		} catch {}
 		const dark = theme === "dark" || (theme !== "light" && query.matches);
 		document.documentElement.classList.toggle("dark", dark);
@@ -47,4 +45,4 @@ export const themeScript = `(${String(() => {
 	};
 	apply();
 	query.addEventListener("change", apply);
-})})()`;
+})()`;

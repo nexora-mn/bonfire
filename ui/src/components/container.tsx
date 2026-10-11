@@ -1,7 +1,6 @@
 import { cn } from "cn";
 import type { ComponentProps } from "react";
 
-/** Centers page content at the site's max width with consistent side padding. */
 export function Container({ className, ...props }: ComponentProps<"div">) {
 	return (
 		<div

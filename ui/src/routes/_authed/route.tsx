@@ -1,6 +1,11 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-// Pathless layout: every route under src/routes/_authed/ requires a signed-in user.
+declare module "@tanstack/react-router" {
+	interface StaticDataRouteOption {
+		title?: string;
+	}
+}
+
 export const Route = createFileRoute("/_authed")({
 	beforeLoad: ({ context, location }) => {
 		if (!context.user) {

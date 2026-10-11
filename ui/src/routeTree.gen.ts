@@ -13,18 +13,34 @@ import { Route as wwwRouteRouteImport } from './routes/(www)/route'
 import { Route as AuthedRouteRouteImport } from './routes/_authed/route'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SlugIndexRouteImport } from './routes/$slug/index'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authSignupRouteImport } from './routes/(auth)/signup'
 import { Route as wwwIndexRouteImport } from './routes/(www)/index'
-import { Route as AuthedDashboardRouteRouteImport } from './routes/_authed/dashboard/route'
+import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
+import { Route as AuthedHomeRouteRouteImport } from './routes/_authed/home/route'
+import { Route as AuthedStudioRouteRouteImport } from './routes/_authed/studio/route'
+import { Route as CCodeRouteImport } from './routes/c/$code'
 import { Route as authAuthConfirmRouteImport } from './routes/(auth)/auth/confirm'
-import { Route as wwwAiIndexRouteImport } from './routes/(www)/ai/index'
 import { Route as wwwBlogIndexRouteImport } from './routes/(www)/blog/index'
 import { Route as wwwBlogSlugRouteImport } from './routes/(www)/blog/$slug'
 import { Route as wwwQrCodeIndexRouteImport } from './routes/(www)/qr-code/index'
-import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
-import { Route as AuthedDashboardProfileRouteImport } from './routes/_authed/dashboard/profile'
+import { Route as AuthedHomeIndexRouteImport } from './routes/_authed/home/index'
+import { Route as AuthedHomeSupportsRouteImport } from './routes/_authed/home/supports'
+import { Route as AuthedStudioCreatorRouteRouteImport } from './routes/_authed/studio/_creator/route'
+import { Route as AuthedStudioBecomeRouteImport } from './routes/_authed/studio/become'
 import { Route as authAuthOauthProviderRouteImport } from './routes/(auth)/auth/oauth.$provider'
+import { Route as AuthedHomeChangelogIndexRouteImport } from './routes/_authed/home/changelog/index'
+import { Route as AuthedHomeDiscoverIndexRouteImport } from './routes/_authed/home/discover/index'
+import { Route as AuthedHomeProfileIndexRouteImport } from './routes/_authed/home/profile/index'
+import { Route as AuthedStudioCreatorIndexRouteImport } from './routes/_authed/studio/_creator/index'
+import { Route as AuthedStudioCreatorDonationsIndexRouteImport } from './routes/_authed/studio/_creator/donations/index'
+import { Route as AuthedStudioCreatorEarningsIndexRouteImport } from './routes/_authed/studio/_creator/earnings/index'
+import { Route as AuthedStudioCreatorPageIndexRouteImport } from './routes/_authed/studio/_creator/page/index'
+import { Route as AuthedStudioCreatorPayoutsIndexRouteImport } from './routes/_authed/studio/_creator/payouts/index'
+import { Route as AuthedStudioCreatorPostsIndexRouteImport } from './routes/_authed/studio/_creator/posts/index'
+import { Route as AuthedStudioCreatorQrIndexRouteImport } from './routes/_authed/studio/_creator/qr/index'
+import { Route as AuthedStudioCreatorTiersIndexRouteImport } from './routes/_authed/studio/_creator/tiers/index'
 
 const wwwRouteRoute = wwwRouteRouteImport.update({
   id: '/(www)',
@@ -44,6 +60,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugIndexRoute = SlugIndexRouteImport.update({
+  id: '/$slug/',
+  path: '/$slug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authLoginRoute = authLoginRouteImport.update({
   id: '/(auth)/login',
   path: '/login',
@@ -59,20 +80,30 @@ const wwwIndexRoute = wwwIndexRouteImport.update({
   path: '/',
   getParentRoute: () => wwwRouteRoute,
 } as any)
-const AuthedDashboardRouteRoute = AuthedDashboardRouteRouteImport.update({
+const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedHomeRouteRoute = AuthedHomeRouteRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedStudioRouteRoute = AuthedStudioRouteRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const CCodeRoute = CCodeRouteImport.update({
+  id: '/c/$code',
+  path: '/c/$code',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const authAuthConfirmRoute = authAuthConfirmRouteImport.update({
   id: '/(auth)/auth/confirm',
   path: '/auth/confirm',
   getParentRoute: () => rootRouteImport,
-} as any)
-const wwwAiIndexRoute = wwwAiIndexRouteImport.update({
-  id: '/ai/',
-  path: '/ai/',
-  getParentRoute: () => wwwRouteRoute,
 } as any)
 const wwwBlogIndexRoute = wwwBlogIndexRouteImport.update({
   id: '/blog/',
@@ -89,52 +120,155 @@ const wwwQrCodeIndexRoute = wwwQrCodeIndexRouteImport.update({
   path: '/qr-code/',
   getParentRoute: () => wwwRouteRoute,
 } as any)
-const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
+const AuthedHomeIndexRoute = AuthedHomeIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthedDashboardRouteRoute,
+  getParentRoute: () => AuthedHomeRouteRoute,
 } as any)
-const AuthedDashboardProfileRoute = AuthedDashboardProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AuthedDashboardRouteRoute,
+const AuthedHomeSupportsRoute = AuthedHomeSupportsRouteImport.update({
+  id: '/supports',
+  path: '/supports',
+  getParentRoute: () => AuthedHomeRouteRoute,
+} as any)
+const AuthedStudioCreatorRouteRoute =
+  AuthedStudioCreatorRouteRouteImport.update({
+    id: '/_creator',
+    getParentRoute: () => AuthedStudioRouteRoute,
+  } as any)
+const AuthedStudioBecomeRoute = AuthedStudioBecomeRouteImport.update({
+  id: '/become',
+  path: '/become',
+  getParentRoute: () => AuthedStudioRouteRoute,
 } as any)
 const authAuthOauthProviderRoute = authAuthOauthProviderRouteImport.update({
   id: '/(auth)/auth/oauth/$provider',
   path: '/auth/oauth/$provider',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedHomeChangelogIndexRoute =
+  AuthedHomeChangelogIndexRouteImport.update({
+    id: '/changelog/',
+    path: '/changelog/',
+    getParentRoute: () => AuthedHomeRouteRoute,
+  } as any)
+const AuthedHomeDiscoverIndexRoute = AuthedHomeDiscoverIndexRouteImport.update({
+  id: '/discover/',
+  path: '/discover/',
+  getParentRoute: () => AuthedHomeRouteRoute,
+} as any)
+const AuthedHomeProfileIndexRoute = AuthedHomeProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => AuthedHomeRouteRoute,
+} as any)
+const AuthedStudioCreatorIndexRoute =
+  AuthedStudioCreatorIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorDonationsIndexRoute =
+  AuthedStudioCreatorDonationsIndexRouteImport.update({
+    id: '/donations/',
+    path: '/donations/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorEarningsIndexRoute =
+  AuthedStudioCreatorEarningsIndexRouteImport.update({
+    id: '/earnings/',
+    path: '/earnings/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorPageIndexRoute =
+  AuthedStudioCreatorPageIndexRouteImport.update({
+    id: '/page/',
+    path: '/page/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorPayoutsIndexRoute =
+  AuthedStudioCreatorPayoutsIndexRouteImport.update({
+    id: '/payouts/',
+    path: '/payouts/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorPostsIndexRoute =
+  AuthedStudioCreatorPostsIndexRouteImport.update({
+    id: '/posts/',
+    path: '/posts/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorQrIndexRoute =
+  AuthedStudioCreatorQrIndexRouteImport.update({
+    id: '/qr/',
+    path: '/qr/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
+const AuthedStudioCreatorTiersIndexRoute =
+  AuthedStudioCreatorTiersIndexRouteImport.update({
+    id: '/tiers/',
+    path: '/tiers/',
+    getParentRoute: () => AuthedStudioCreatorRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof wwwIndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/home': typeof AuthedHomeRouteRouteWithChildren
+  '/studio': typeof AuthedStudioRouteRouteWithChildren
   '/login': typeof authLoginRoute
   '/signup': typeof authSignupRoute
+  '/dashboard': typeof AuthedDashboardRoute
+  '/c/$code': typeof CCodeRoute
+  '/$slug/': typeof SlugIndexRoute
   '/auth/confirm': typeof authAuthConfirmRoute
   '/blog/$slug': typeof wwwBlogSlugRoute
-  '/dashboard/profile': typeof AuthedDashboardProfileRoute
-  '/ai/': typeof wwwAiIndexRoute
+  '/home/supports': typeof AuthedHomeSupportsRoute
+  '/studio/become': typeof AuthedStudioBecomeRoute
   '/blog/': typeof wwwBlogIndexRoute
   '/qr-code/': typeof wwwQrCodeIndexRoute
-  '/dashboard/': typeof AuthedDashboardIndexRoute
+  '/home/': typeof AuthedHomeIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
+  '/home/changelog/': typeof AuthedHomeChangelogIndexRoute
+  '/home/discover/': typeof AuthedHomeDiscoverIndexRoute
+  '/home/profile/': typeof AuthedHomeProfileIndexRoute
+  '/studio/': typeof AuthedStudioCreatorIndexRoute
+  '/studio/donations/': typeof AuthedStudioCreatorDonationsIndexRoute
+  '/studio/earnings/': typeof AuthedStudioCreatorEarningsIndexRoute
+  '/studio/page/': typeof AuthedStudioCreatorPageIndexRoute
+  '/studio/payouts/': typeof AuthedStudioCreatorPayoutsIndexRoute
+  '/studio/posts/': typeof AuthedStudioCreatorPostsIndexRoute
+  '/studio/qr/': typeof AuthedStudioCreatorQrIndexRoute
+  '/studio/tiers/': typeof AuthedStudioCreatorTiersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof wwwIndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/studio': typeof AuthedStudioCreatorIndexRoute
   '/login': typeof authLoginRoute
   '/signup': typeof authSignupRoute
+  '/dashboard': typeof AuthedDashboardRoute
+  '/c/$code': typeof CCodeRoute
+  '/$slug': typeof SlugIndexRoute
   '/auth/confirm': typeof authAuthConfirmRoute
   '/blog/$slug': typeof wwwBlogSlugRoute
-  '/dashboard/profile': typeof AuthedDashboardProfileRoute
-  '/ai': typeof wwwAiIndexRoute
+  '/home/supports': typeof AuthedHomeSupportsRoute
+  '/studio/become': typeof AuthedStudioBecomeRoute
   '/blog': typeof wwwBlogIndexRoute
   '/qr-code': typeof wwwQrCodeIndexRoute
-  '/dashboard': typeof AuthedDashboardIndexRoute
+  '/home': typeof AuthedHomeIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
+  '/home/changelog': typeof AuthedHomeChangelogIndexRoute
+  '/home/discover': typeof AuthedHomeDiscoverIndexRoute
+  '/home/profile': typeof AuthedHomeProfileIndexRoute
+  '/studio/donations': typeof AuthedStudioCreatorDonationsIndexRoute
+  '/studio/earnings': typeof AuthedStudioCreatorEarningsIndexRoute
+  '/studio/page': typeof AuthedStudioCreatorPageIndexRoute
+  '/studio/payouts': typeof AuthedStudioCreatorPayoutsIndexRoute
+  '/studio/posts': typeof AuthedStudioCreatorPostsIndexRoute
+  '/studio/qr': typeof AuthedStudioCreatorQrIndexRoute
+  '/studio/tiers': typeof AuthedStudioCreatorTiersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,18 +276,34 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/_authed/dashboard': typeof AuthedDashboardRouteRouteWithChildren
+  '/_authed/home': typeof AuthedHomeRouteRouteWithChildren
+  '/_authed/studio': typeof AuthedStudioRouteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/signup': typeof authSignupRoute
+  '/_authed/dashboard': typeof AuthedDashboardRoute
+  '/c/$code': typeof CCodeRoute
+  '/$slug/': typeof SlugIndexRoute
   '/(www)/': typeof wwwIndexRoute
+  '/_authed/studio/_creator': typeof AuthedStudioCreatorRouteRouteWithChildren
   '/(auth)/auth/confirm': typeof authAuthConfirmRoute
   '/(www)/blog/$slug': typeof wwwBlogSlugRoute
-  '/_authed/dashboard/profile': typeof AuthedDashboardProfileRoute
-  '/(www)/ai/': typeof wwwAiIndexRoute
+  '/_authed/home/supports': typeof AuthedHomeSupportsRoute
+  '/_authed/studio/become': typeof AuthedStudioBecomeRoute
   '/(www)/blog/': typeof wwwBlogIndexRoute
   '/(www)/qr-code/': typeof wwwQrCodeIndexRoute
-  '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
+  '/_authed/home/': typeof AuthedHomeIndexRoute
   '/(auth)/auth/oauth/$provider': typeof authAuthOauthProviderRoute
+  '/_authed/home/changelog/': typeof AuthedHomeChangelogIndexRoute
+  '/_authed/home/discover/': typeof AuthedHomeDiscoverIndexRoute
+  '/_authed/home/profile/': typeof AuthedHomeProfileIndexRoute
+  '/_authed/studio/_creator/': typeof AuthedStudioCreatorIndexRoute
+  '/_authed/studio/_creator/donations/': typeof AuthedStudioCreatorDonationsIndexRoute
+  '/_authed/studio/_creator/earnings/': typeof AuthedStudioCreatorEarningsIndexRoute
+  '/_authed/studio/_creator/page/': typeof AuthedStudioCreatorPageIndexRoute
+  '/_authed/studio/_creator/payouts/': typeof AuthedStudioCreatorPayoutsIndexRoute
+  '/_authed/studio/_creator/posts/': typeof AuthedStudioCreatorPostsIndexRoute
+  '/_authed/studio/_creator/qr/': typeof AuthedStudioCreatorQrIndexRoute
+  '/_authed/studio/_creator/tiers/': typeof AuthedStudioCreatorTiersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,50 +311,95 @@ export interface FileRouteTypes {
     | '/'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/dashboard'
+    | '/home'
+    | '/studio'
     | '/login'
     | '/signup'
+    | '/dashboard'
+    | '/c/$code'
+    | '/$slug/'
     | '/auth/confirm'
     | '/blog/$slug'
-    | '/dashboard/profile'
-    | '/ai/'
+    | '/home/supports'
+    | '/studio/become'
     | '/blog/'
     | '/qr-code/'
-    | '/dashboard/'
+    | '/home/'
     | '/auth/oauth/$provider'
+    | '/home/changelog/'
+    | '/home/discover/'
+    | '/home/profile/'
+    | '/studio/'
+    | '/studio/donations/'
+    | '/studio/earnings/'
+    | '/studio/page/'
+    | '/studio/payouts/'
+    | '/studio/posts/'
+    | '/studio/qr/'
+    | '/studio/tiers/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/studio'
     | '/login'
     | '/signup'
+    | '/dashboard'
+    | '/c/$code'
+    | '/$slug'
     | '/auth/confirm'
     | '/blog/$slug'
-    | '/dashboard/profile'
-    | '/ai'
+    | '/home/supports'
+    | '/studio/become'
     | '/blog'
     | '/qr-code'
-    | '/dashboard'
+    | '/home'
     | '/auth/oauth/$provider'
+    | '/home/changelog'
+    | '/home/discover'
+    | '/home/profile'
+    | '/studio/donations'
+    | '/studio/earnings'
+    | '/studio/page'
+    | '/studio/payouts'
+    | '/studio/posts'
+    | '/studio/qr'
+    | '/studio/tiers'
   id:
     | '__root__'
     | '/(www)'
     | '/_authed'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/_authed/dashboard'
+    | '/_authed/home'
+    | '/_authed/studio'
     | '/(auth)/login'
     | '/(auth)/signup'
+    | '/_authed/dashboard'
+    | '/c/$code'
+    | '/$slug/'
     | '/(www)/'
+    | '/_authed/studio/_creator'
     | '/(auth)/auth/confirm'
     | '/(www)/blog/$slug'
-    | '/_authed/dashboard/profile'
-    | '/(www)/ai/'
+    | '/_authed/home/supports'
+    | '/_authed/studio/become'
     | '/(www)/blog/'
     | '/(www)/qr-code/'
-    | '/_authed/dashboard/'
+    | '/_authed/home/'
     | '/(auth)/auth/oauth/$provider'
+    | '/_authed/home/changelog/'
+    | '/_authed/home/discover/'
+    | '/_authed/home/profile/'
+    | '/_authed/studio/_creator/'
+    | '/_authed/studio/_creator/donations/'
+    | '/_authed/studio/_creator/earnings/'
+    | '/_authed/studio/_creator/page/'
+    | '/_authed/studio/_creator/payouts/'
+    | '/_authed/studio/_creator/posts/'
+    | '/_authed/studio/_creator/qr/'
+    | '/_authed/studio/_creator/tiers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,6 +409,8 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   authLoginRoute: typeof authLoginRoute
   authSignupRoute: typeof authSignupRoute
+  CCodeRoute: typeof CCodeRoute
+  SlugIndexRoute: typeof SlugIndexRoute
   authAuthConfirmRoute: typeof authAuthConfirmRoute
   authAuthOauthProviderRoute: typeof authAuthOauthProviderRoute
 }
@@ -248,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$slug/': {
+      id: '/$slug/'
+      path: '/$slug'
+      fullPath: '/$slug/'
+      preLoaderRoute: typeof SlugIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
@@ -273,8 +477,29 @@ declare module '@tanstack/react-router' {
       id: '/_authed/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthedDashboardRouteRouteImport
+      preLoaderRoute: typeof AuthedDashboardRouteImport
       parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/home': {
+      id: '/_authed/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthedHomeRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/studio': {
+      id: '/_authed/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof AuthedStudioRouteRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/c/$code': {
+      id: '/c/$code'
+      path: '/c/$code'
+      fullPath: '/c/$code'
+      preLoaderRoute: typeof CCodeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/auth/confirm': {
       id: '/(auth)/auth/confirm'
@@ -282,13 +507,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/confirm'
       preLoaderRoute: typeof authAuthConfirmRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/(www)/ai/': {
-      id: '/(www)/ai/'
-      path: '/ai'
-      fullPath: '/ai/'
-      preLoaderRoute: typeof wwwAiIndexRouteImport
-      parentRoute: typeof wwwRouteRoute
     }
     '/(www)/blog/': {
       id: '/(www)/blog/'
@@ -311,19 +529,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof wwwQrCodeIndexRouteImport
       parentRoute: typeof wwwRouteRoute
     }
-    '/_authed/dashboard/': {
-      id: '/_authed/dashboard/'
+    '/_authed/home/': {
+      id: '/_authed/home/'
       path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof AuthedDashboardIndexRouteImport
-      parentRoute: typeof AuthedDashboardRouteRoute
+      fullPath: '/home/'
+      preLoaderRoute: typeof AuthedHomeIndexRouteImport
+      parentRoute: typeof AuthedHomeRouteRoute
     }
-    '/_authed/dashboard/profile': {
-      id: '/_authed/dashboard/profile'
-      path: '/profile'
-      fullPath: '/dashboard/profile'
-      preLoaderRoute: typeof AuthedDashboardProfileRouteImport
-      parentRoute: typeof AuthedDashboardRouteRoute
+    '/_authed/home/supports': {
+      id: '/_authed/home/supports'
+      path: '/supports'
+      fullPath: '/home/supports'
+      preLoaderRoute: typeof AuthedHomeSupportsRouteImport
+      parentRoute: typeof AuthedHomeRouteRoute
+    }
+    '/_authed/studio/_creator': {
+      id: '/_authed/studio/_creator'
+      path: ''
+      fullPath: '/studio'
+      preLoaderRoute: typeof AuthedStudioCreatorRouteRouteImport
+      parentRoute: typeof AuthedStudioRouteRoute
+    }
+    '/_authed/studio/become': {
+      id: '/_authed/studio/become'
+      path: '/become'
+      fullPath: '/studio/become'
+      preLoaderRoute: typeof AuthedStudioBecomeRouteImport
+      parentRoute: typeof AuthedStudioRouteRoute
     }
     '/(auth)/auth/oauth/$provider': {
       id: '/(auth)/auth/oauth/$provider'
@@ -332,13 +564,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthOauthProviderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/home/changelog/': {
+      id: '/_authed/home/changelog/'
+      path: '/changelog'
+      fullPath: '/home/changelog/'
+      preLoaderRoute: typeof AuthedHomeChangelogIndexRouteImport
+      parentRoute: typeof AuthedHomeRouteRoute
+    }
+    '/_authed/home/discover/': {
+      id: '/_authed/home/discover/'
+      path: '/discover'
+      fullPath: '/home/discover/'
+      preLoaderRoute: typeof AuthedHomeDiscoverIndexRouteImport
+      parentRoute: typeof AuthedHomeRouteRoute
+    }
+    '/_authed/home/profile/': {
+      id: '/_authed/home/profile/'
+      path: '/profile'
+      fullPath: '/home/profile/'
+      preLoaderRoute: typeof AuthedHomeProfileIndexRouteImport
+      parentRoute: typeof AuthedHomeRouteRoute
+    }
+    '/_authed/studio/_creator/': {
+      id: '/_authed/studio/_creator/'
+      path: '/'
+      fullPath: '/studio/'
+      preLoaderRoute: typeof AuthedStudioCreatorIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/donations/': {
+      id: '/_authed/studio/_creator/donations/'
+      path: '/donations'
+      fullPath: '/studio/donations/'
+      preLoaderRoute: typeof AuthedStudioCreatorDonationsIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/earnings/': {
+      id: '/_authed/studio/_creator/earnings/'
+      path: '/earnings'
+      fullPath: '/studio/earnings/'
+      preLoaderRoute: typeof AuthedStudioCreatorEarningsIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/page/': {
+      id: '/_authed/studio/_creator/page/'
+      path: '/page'
+      fullPath: '/studio/page/'
+      preLoaderRoute: typeof AuthedStudioCreatorPageIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/payouts/': {
+      id: '/_authed/studio/_creator/payouts/'
+      path: '/payouts'
+      fullPath: '/studio/payouts/'
+      preLoaderRoute: typeof AuthedStudioCreatorPayoutsIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/posts/': {
+      id: '/_authed/studio/_creator/posts/'
+      path: '/posts'
+      fullPath: '/studio/posts/'
+      preLoaderRoute: typeof AuthedStudioCreatorPostsIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/qr/': {
+      id: '/_authed/studio/_creator/qr/'
+      path: '/qr'
+      fullPath: '/studio/qr/'
+      preLoaderRoute: typeof AuthedStudioCreatorQrIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
+    '/_authed/studio/_creator/tiers/': {
+      id: '/_authed/studio/_creator/tiers/'
+      path: '/tiers'
+      fullPath: '/studio/tiers/'
+      preLoaderRoute: typeof AuthedStudioCreatorTiersIndexRouteImport
+      parentRoute: typeof AuthedStudioCreatorRouteRoute
+    }
   }
 }
 
 interface wwwRouteRouteChildren {
   wwwIndexRoute: typeof wwwIndexRoute
   wwwBlogSlugRoute: typeof wwwBlogSlugRoute
-  wwwAiIndexRoute: typeof wwwAiIndexRoute
   wwwBlogIndexRoute: typeof wwwBlogIndexRoute
   wwwQrCodeIndexRoute: typeof wwwQrCodeIndexRoute
 }
@@ -346,7 +654,6 @@ interface wwwRouteRouteChildren {
 const wwwRouteRouteChildren: wwwRouteRouteChildren = {
   wwwIndexRoute: wwwIndexRoute,
   wwwBlogSlugRoute: wwwBlogSlugRoute,
-  wwwAiIndexRoute: wwwAiIndexRoute,
   wwwBlogIndexRoute: wwwBlogIndexRoute,
   wwwQrCodeIndexRoute: wwwQrCodeIndexRoute,
 }
@@ -355,25 +662,79 @@ const wwwRouteRouteWithChildren = wwwRouteRoute._addFileChildren(
   wwwRouteRouteChildren,
 )
 
-interface AuthedDashboardRouteRouteChildren {
-  AuthedDashboardProfileRoute: typeof AuthedDashboardProfileRoute
-  AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
+interface AuthedHomeRouteRouteChildren {
+  AuthedHomeSupportsRoute: typeof AuthedHomeSupportsRoute
+  AuthedHomeIndexRoute: typeof AuthedHomeIndexRoute
+  AuthedHomeChangelogIndexRoute: typeof AuthedHomeChangelogIndexRoute
+  AuthedHomeDiscoverIndexRoute: typeof AuthedHomeDiscoverIndexRoute
+  AuthedHomeProfileIndexRoute: typeof AuthedHomeProfileIndexRoute
 }
 
-const AuthedDashboardRouteRouteChildren: AuthedDashboardRouteRouteChildren = {
-  AuthedDashboardProfileRoute: AuthedDashboardProfileRoute,
-  AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
+const AuthedHomeRouteRouteChildren: AuthedHomeRouteRouteChildren = {
+  AuthedHomeSupportsRoute: AuthedHomeSupportsRoute,
+  AuthedHomeIndexRoute: AuthedHomeIndexRoute,
+  AuthedHomeChangelogIndexRoute: AuthedHomeChangelogIndexRoute,
+  AuthedHomeDiscoverIndexRoute: AuthedHomeDiscoverIndexRoute,
+  AuthedHomeProfileIndexRoute: AuthedHomeProfileIndexRoute,
 }
 
-const AuthedDashboardRouteRouteWithChildren =
-  AuthedDashboardRouteRoute._addFileChildren(AuthedDashboardRouteRouteChildren)
+const AuthedHomeRouteRouteWithChildren = AuthedHomeRouteRoute._addFileChildren(
+  AuthedHomeRouteRouteChildren,
+)
+
+interface AuthedStudioCreatorRouteRouteChildren {
+  AuthedStudioCreatorIndexRoute: typeof AuthedStudioCreatorIndexRoute
+  AuthedStudioCreatorDonationsIndexRoute: typeof AuthedStudioCreatorDonationsIndexRoute
+  AuthedStudioCreatorEarningsIndexRoute: typeof AuthedStudioCreatorEarningsIndexRoute
+  AuthedStudioCreatorPageIndexRoute: typeof AuthedStudioCreatorPageIndexRoute
+  AuthedStudioCreatorPayoutsIndexRoute: typeof AuthedStudioCreatorPayoutsIndexRoute
+  AuthedStudioCreatorPostsIndexRoute: typeof AuthedStudioCreatorPostsIndexRoute
+  AuthedStudioCreatorQrIndexRoute: typeof AuthedStudioCreatorQrIndexRoute
+  AuthedStudioCreatorTiersIndexRoute: typeof AuthedStudioCreatorTiersIndexRoute
+}
+
+const AuthedStudioCreatorRouteRouteChildren: AuthedStudioCreatorRouteRouteChildren =
+  {
+    AuthedStudioCreatorIndexRoute: AuthedStudioCreatorIndexRoute,
+    AuthedStudioCreatorDonationsIndexRoute:
+      AuthedStudioCreatorDonationsIndexRoute,
+    AuthedStudioCreatorEarningsIndexRoute:
+      AuthedStudioCreatorEarningsIndexRoute,
+    AuthedStudioCreatorPageIndexRoute: AuthedStudioCreatorPageIndexRoute,
+    AuthedStudioCreatorPayoutsIndexRoute: AuthedStudioCreatorPayoutsIndexRoute,
+    AuthedStudioCreatorPostsIndexRoute: AuthedStudioCreatorPostsIndexRoute,
+    AuthedStudioCreatorQrIndexRoute: AuthedStudioCreatorQrIndexRoute,
+    AuthedStudioCreatorTiersIndexRoute: AuthedStudioCreatorTiersIndexRoute,
+  }
+
+const AuthedStudioCreatorRouteRouteWithChildren =
+  AuthedStudioCreatorRouteRoute._addFileChildren(
+    AuthedStudioCreatorRouteRouteChildren,
+  )
+
+interface AuthedStudioRouteRouteChildren {
+  AuthedStudioCreatorRouteRoute: typeof AuthedStudioCreatorRouteRouteWithChildren
+  AuthedStudioBecomeRoute: typeof AuthedStudioBecomeRoute
+}
+
+const AuthedStudioRouteRouteChildren: AuthedStudioRouteRouteChildren = {
+  AuthedStudioCreatorRouteRoute: AuthedStudioCreatorRouteRouteWithChildren,
+  AuthedStudioBecomeRoute: AuthedStudioBecomeRoute,
+}
+
+const AuthedStudioRouteRouteWithChildren =
+  AuthedStudioRouteRoute._addFileChildren(AuthedStudioRouteRouteChildren)
 
 interface AuthedRouteRouteChildren {
-  AuthedDashboardRouteRoute: typeof AuthedDashboardRouteRouteWithChildren
+  AuthedHomeRouteRoute: typeof AuthedHomeRouteRouteWithChildren
+  AuthedStudioRouteRoute: typeof AuthedStudioRouteRouteWithChildren
+  AuthedDashboardRoute: typeof AuthedDashboardRoute
 }
 
 const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
-  AuthedDashboardRouteRoute: AuthedDashboardRouteRouteWithChildren,
+  AuthedHomeRouteRoute: AuthedHomeRouteRouteWithChildren,
+  AuthedStudioRouteRoute: AuthedStudioRouteRouteWithChildren,
+  AuthedDashboardRoute: AuthedDashboardRoute,
 }
 
 const AuthedRouteRouteWithChildren = AuthedRouteRoute._addFileChildren(
@@ -387,6 +748,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   authLoginRoute: authLoginRoute,
   authSignupRoute: authSignupRoute,
+  CCodeRoute: CCodeRoute,
+  SlugIndexRoute: SlugIndexRoute,
   authAuthConfirmRoute: authAuthConfirmRoute,
   authAuthOauthProviderRoute: authAuthOauthProviderRoute,
 }

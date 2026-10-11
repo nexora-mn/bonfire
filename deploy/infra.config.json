@@ -1,0 +1,50 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "metadata": {
+    "app_id": "serve-c23i",
+    "env_name": "production",
+    "env_type": "production",
+    "cloud": "self-hosted",
+    "base_url": "https://api.bonfire.mn"
+  },
+  "graceful_shutdown": {
+    "total": 30,
+    "shutdown_hooks": 15,
+    "handlers": 15
+  },
+  "sql_servers": [
+    {
+      "host": "postgres:5432",
+      "tls_config": {
+        "disabled": true
+      },
+      "databases": {
+        "bonfire": {
+          "name": "bonfire",
+          "username": "bonfire",
+          "password": { "$env": "DB_PASSWORD" },
+          "max_connections": 20,
+          "min_connections": 2
+        }
+      }
+    }
+  ],
+  "object_storage": [
+    {
+      "type": "s3",
+      "region": "auto",
+      "endpoint": "https://<account-id>.r2.cloudflarestorage.com",
+      "access_key_id": { "$env": "S3_ACCESS_KEY_ID" },
+      "secret_access_key": { "$env": "S3_SECRET_ACCESS_KEY" },
+      "buckets": {
+        "creator-media": {
+          "name": "bonfire-creator-media",
+          "public_base_url": "https://media.bonfire.mn"
+        }
+      }
+    }
+  ],
+  "secrets": {
+    "SupabaseURL": { "$env": "SUPABASE_URL" }
+  }
+}

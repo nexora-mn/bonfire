@@ -16,9 +16,11 @@
   ],
   "dependencies": {
     "@sanity/vision": "^6.18.0",
+    "easymde": "^2.21.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "sanity": "^6.18.0",
+    "sanity-plugin-markdown": "^9.0.15",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {

@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { Doodle } from "@/components/doodle";
 import { FlameMark } from "@/components/flame-mark";
 
-/** Flame-colored brand side of the auth split screen; hidden below `lg`. */
 export function BrandPanel() {
 	return (
 		<aside className="sticky top-3 m-3 hidden h-[calc(100svh-1.5rem)] flex-col justify-between gap-8 overflow-hidden rounded-2xl bg-flame p-10 text-ink lg:flex xl:p-12">

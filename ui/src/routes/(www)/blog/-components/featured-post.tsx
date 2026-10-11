@@ -5,7 +5,6 @@ import { PostImage } from "./post-image";
 import { PostMeta } from "./post-meta";
 import type { Post } from "./posts";
 
-/** The newest post, as one wide card at the top of the blog. */
 export function FeaturedPost({ post }: { post: Post }) {
 	return (
 		<Link

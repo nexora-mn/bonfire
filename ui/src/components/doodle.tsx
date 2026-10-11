@@ -32,7 +32,7 @@ export function Doodle({
 }: {
 	name: DoodleName;
 	className?: string;
-	/** Load immediately; use for doodles visible on first paint. */
+	/** Load eagerly; for doodles visible on first paint. */
 	priority?: boolean;
 }) {
 	return (

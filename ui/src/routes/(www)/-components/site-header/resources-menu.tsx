@@ -7,7 +7,6 @@ import { cn } from "cn";
 const itemClass =
 	"flex flex-col gap-0.5 rounded-2xl px-4 py-3 outline-none select-none";
 
-/** "Хэрэгсэл" (tools) dropdown with creator tools; tools that aren't ready are shown disabled. */
 export function ResourcesMenu({ className }: { className?: string }) {
 	return (
 		<Menu.Root>

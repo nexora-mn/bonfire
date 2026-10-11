@@ -3,11 +3,10 @@ import type { ComponentProps } from "react";
 
 const tones = {
 	dark: "",
-	// Brand band: `light` switches theme tokens to light mode for dark text.
+	// `light` switches theme tokens to light mode for dark text.
 	flame: "light bg-flame text-foreground",
 };
 
-/** Full-bleed page section; tone sets its background and text color. */
 export function Band({
 	tone = "dark",
 	className,

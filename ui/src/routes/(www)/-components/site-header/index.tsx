@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { brandButtonVariants } from "@/components/brand-button";
+import { cn } from "cn";
 import { Container } from "@/components/container";
 import { FlameMark } from "@/components/flame-mark";
+import { buttonVariants } from "@/components/ui/button";
+import { MobileMenu } from "./mobile-menu";
 import { ResourcesMenu } from "./resources-menu";
 
 const navLink =
@@ -10,7 +12,7 @@ const navLink =
 export function SiteHeader({ signedIn }: { signedIn: boolean }) {
 	return (
 		<header className="fixed inset-x-0 top-0 z-40 bg-background/80 backdrop-blur-xl">
-			<Container className="flex h-18 items-center gap-1">
+			<Container className="flex h-18 items-center gap-2">
 				<div className="mr-auto flex items-center gap-6">
 					<Link
 						to="/"
@@ -19,11 +21,8 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
 						<FlameMark className="size-8 text-foreground" />
 						{"Bonfire"}
 					</Link>
-					<nav aria-label="Үндсэн цэс" className="flex items-center">
-						<Link to="/ai" className={navLink}>
-							{"AI hype"}
-						</Link>
-						<ResourcesMenu className="hidden sm:flex" />
+					<nav aria-label="Үндсэн цэс" className="hidden items-center md:flex">
+						<ResourcesMenu className="flex" />
 						<Link to="/blog" className={navLink}>
 							{"Блог"}
 						</Link>
@@ -31,19 +30,32 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
 				</div>
 
 				{signedIn ? (
-					<Link to="/dashboard" className={brandButtonVariants({ size: "sm" })}>
+					<Link
+						to="/home"
+						className={cn(
+							buttonVariants({ size: "sm" }),
+							"hidden min-[360px]:inline-flex",
+						)}
+					>
 						{"Хянах самбар"}
 					</Link>
 				) : (
 					<>
-						<Link to="/login" className={navLink}>
+						<Link to="/login" className={cn(navLink, "hidden md:inline-flex")}>
 							{"Нэвтрэх"}
 						</Link>
-						<Link to="/signup" className={brandButtonVariants({ size: "sm" })}>
+						<Link
+							to="/signup"
+							className={cn(
+								buttonVariants({ size: "sm" }),
+								"hidden min-[360px]:inline-flex",
+							)}
+						>
 							{"Хуудсаа нээх"}
 						</Link>
 					</>
 				)}
+				<MobileMenu signedIn={signedIn} />
 			</Container>
 		</header>
 	);

@@ -1,6 +1,5 @@
 import type { SimpleIcon } from "simple-icons";
 
-/** Renders a brand logo from simple-icons. Fills with `color` or the current text color. */
 export function BrandIcon({
 	icon,
 	color,

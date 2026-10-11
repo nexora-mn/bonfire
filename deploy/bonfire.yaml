@@ -1,0 +1,238 @@
+# Bonfire backend on Kubernetes: Postgres, the Encore server and its ingress.
+# Applied by `make deploy`, which fills in __IMAGE__. Secrets live in
+# secrets.yaml (see secrets.example.yaml); migrations come from the
+# bonfire-migrations ConfigMap that `make migrations` builds.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bonfire
+---
+# --- Postgres -----------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: bonfire
+spec:
+  clusterIP: None
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: bonfire
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      securityContext:
+        fsGroup: 999
+      containers:
+        - name: postgres
+          image: postgres:17.6-alpine
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: bonfire
+            - name: POSTGRES_DB
+              value: bonfire
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bonfire-server
+                  key: DB_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "bonfire", "-d", "bonfire"]
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "bonfire", "-d", "bonfire"]
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+---
+# --- Server -------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  namespace: bonfire
+spec:
+  selector:
+    app: server
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: bonfire
+spec:
+  # DBOS coordinates the payout queue and schedule across replicas through
+  # Postgres, so scaling out is safe.
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      terminationGracePeriodSeconds: 40
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: server
+      initContainers:
+        # Self-hosted Encore images don't apply migrations. golang-migrate uses
+        # the same schema_migrations table as Encore and takes an advisory
+        # lock, so concurrent pods can't race.
+        - name: migrate
+          image: migrate/migrate:v4.18.3
+          args:
+            - -path=/migrations
+            - -database=postgres://bonfire:$(DB_PASSWORD)@postgres:5432/bonfire?sslmode=disable
+            - up
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bonfire-server
+                  key: DB_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+              readOnly: true
+      containers:
+        - name: server
+          image: __IMAGE__
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+          envFrom:
+            - secretRef:
+                name: bonfire-server
+          readinessProbe:
+            httpGet:
+              path: /__encore/healthz
+              port: http
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /__encore/healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: migrations
+          configMap:
+            name: bonfire-migrations
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: server
+  namespace: bonfire
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: server
+---
+# Only needed if something outside the cluster calls the API; the UI server
+# can use http://server.bonfire.svc.cluster.local when it runs in-cluster.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: server
+  namespace: bonfire
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    # Media uploads are capped at 5 MiB in creator/media.go.
+    nginx.ingress.kubernetes.io/proxy-body-size: 6m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [api.bonfire.mn]
+      secretName: server-tls
+  rules:
+    - host: api.bonfire.mn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: server
+                port:
+                  name: http

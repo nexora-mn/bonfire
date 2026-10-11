@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "cn";
-import { brandButtonVariants } from "@/components/brand-button";
 import { Container } from "@/components/container";
 import { FlameMark } from "@/components/flame-mark";
+import { buttonVariants } from "@/components/ui/button";
 
 export function PostNotFound() {
 	return (
@@ -13,10 +13,7 @@ export function PostNotFound() {
 				<p className="mt-6 max-w-md text-xl text-foreground/65">
 					{"Холбоос буруу эсвэл нийтлэл устсан байж магадгүй."}
 				</p>
-				<Link
-					to="/blog"
-					className={cn(brandButtonVariants({ size: "lg" }), "mt-9")}
-				>
+				<Link to="/blog" className={cn(buttonVariants({ size: "lg" }), "mt-9")}>
 					{"Блог руу буцах"}
 				</Link>
 			</Container>

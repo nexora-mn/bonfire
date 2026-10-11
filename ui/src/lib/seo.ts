@@ -1,13 +1,5 @@
-export const SITE_NAME = "Bonfire";
-export const SITE_URL = (
-	import.meta.env.VITE_SITE_URL ?? "http://localhost:3000"
-).replace(/\/$/, "");
-export const DEFAULT_DESCRIPTION =
-	"Ажлын дараах цагаараа бүтээдэг зүйлээ хуваалцаж, дэмжигчдээсээ сар бүр орлого ол.";
-
-export function absoluteUrl(path: string) {
-	return new URL(path, `${SITE_URL}/`).toString();
-}
+import { DEFAULT_DESCRIPTION, SITE_NAME } from "./constants";
+import { absoluteUrl } from "./utils/url";
 
 type SeoInput = {
 	/** Page title without the site name; omit for the home page. */

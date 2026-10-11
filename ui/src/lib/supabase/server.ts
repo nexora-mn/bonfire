@@ -60,8 +60,3 @@ export function createSupabaseRouteClient(request: Request) {
 	);
 	return { supabase, headers };
 }
-
-/** Only allow same-origin relative redirects. */
-export function safeRedirectPath(path: string | null, fallback = "/dashboard") {
-	return path?.startsWith("/") && !path.startsWith("//") ? path : fallback;
-}

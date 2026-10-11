@@ -1,13 +1,10 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-	createSupabaseRouteClient,
-	safeRedirectPath,
-} from "#/lib/supabase/server";
+import { createSupabaseRouteClient } from "@/lib/supabase/server";
+import { safeRedirectPath } from "@/lib/utils/url";
 
-// Callback for Supabase email links (signup confirmation, magic link, recovery)
-// and OAuth providers. Handles both the PKCE `code` flow and the `token_hash`
-// email template flow.
+// Callback for Supabase email links and OAuth providers: handles both the
+// PKCE `code` flow and the `token_hash` email template flow.
 export const Route = createFileRoute("/(auth)/auth/confirm")({
 	server: {
 		handlers: {

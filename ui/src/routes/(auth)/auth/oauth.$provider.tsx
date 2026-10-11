@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { isOAuthProvider } from "#/lib/oauth";
-import {
-	createSupabaseRouteClient,
-	safeRedirectPath,
-} from "#/lib/supabase/server";
+import { OAUTH_PROVIDERS, type OAuthProvider } from "@/lib/constants";
+import { createSupabaseRouteClient } from "@/lib/supabase/server";
+import { safeRedirectPath } from "@/lib/utils/url";
 
 // Starts an OAuth (PKCE) sign-in, e.g. /auth/oauth/google. Supabase stores the
 // code verifier in a cookie, so the redirect must carry the Set-Cookie headers.
@@ -15,7 +13,8 @@ export const Route = createFileRoute("/(auth)/auth/oauth/$provider")({
 					status: 303,
 					headers: { Location: "/login?error=oauth_failed" },
 				});
-				if (!isOAuthProvider(params.provider)) return failed;
+				const provider = params.provider as OAuthProvider;
+				if (!OAUTH_PROVIDERS.includes(provider)) return failed;
 
 				const url = new URL(request.url);
 				const next = safeRedirectPath(url.searchParams.get("redirect"));
@@ -24,14 +23,12 @@ export const Route = createFileRoute("/(auth)/auth/oauth/$provider")({
 
 				const { supabase, headers } = createSupabaseRouteClient(request);
 				const { data, error } = await supabase.auth.signInWithOAuth({
-					provider: params.provider,
+					provider,
 					options: {
 						redirectTo: callback.toString(),
 						// Let people with several Google accounts pick one.
 						queryParams:
-							params.provider === "google"
-								? { prompt: "select_account" }
-								: undefined,
+							provider === "google" ? { prompt: "select_account" } : undefined,
 					},
 				});
 				if (error || !data.url) return failed;

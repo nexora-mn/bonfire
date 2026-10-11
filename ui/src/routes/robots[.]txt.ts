@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { absoluteUrl } from "#/lib/seo";
+import { absoluteUrl } from "@/lib/utils/url";
 
 // Keep signed-in pages and auth callbacks out of search results.
-const disallowed = ["/dashboard", "/auth/"];
+const disallowed = ["/dashboard", "/home", "/studio", "/auth/"];
 
 export const Route = createFileRoute("/robots.txt")({
 	server: {

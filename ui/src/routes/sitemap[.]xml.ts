@@ -1,18 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { sanity } from "#/lib/sanity";
-import { absoluteUrl } from "#/lib/seo";
+import { sanity } from "@/lib/sanity";
+import { absoluteUrl } from "@/lib/utils/url";
 
-const staticPaths = ["/", "/blog", "/ai", "/qr-code"];
+const staticPaths = ["/", "/blog", "/qr-code"];
 
 const postsQuery = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
 	"slug": slug.current,
 	"updatedAt": _updatedAt
 }`;
-
-function entry(path: string, lastmod?: string) {
-	const loc = `<loc>${absoluteUrl(path)}</loc>`;
-	return `<url>${loc}${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`;
-}
 
 export const Route = createFileRoute("/sitemap.xml")({
 	server: {
@@ -21,11 +16,15 @@ export const Route = createFileRoute("/sitemap.xml")({
 				const posts =
 					await sanity.fetch<{ slug: string; updatedAt: string }[]>(postsQuery);
 				const urls = [
-					...staticPaths.map((path) => entry(path)),
-					...posts.map((post) =>
-						entry(`/blog/${encodeURIComponent(post.slug)}`, post.updatedAt),
-					),
-				];
+					...staticPaths.map((path) => ({ path, lastmod: undefined })),
+					...posts.map((post) => ({
+						path: `/blog/${encodeURIComponent(post.slug)}`,
+						lastmod: post.updatedAt,
+					})),
+				].map(
+					({ path, lastmod }) =>
+						`<url><loc>${absoluteUrl(path)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`,
+				);
 				const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}

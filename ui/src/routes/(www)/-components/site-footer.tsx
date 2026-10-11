@@ -5,9 +5,13 @@ import { FlameMark } from "@/components/flame-mark";
 const columns = [
 	{
 		title: "Bonfire",
+		links: [{ to: "/blog", label: "Блог" }],
+	},
+	{
+		title: "Хэрэгсэл",
 		links: [
-			{ to: "/blog", label: "Блог" },
-			{ to: "/ai", label: "AI" },
+			{ to: "/qr-code", label: "QR код" },
+			{ label: "Стрим мэдэгдэл", soon: true },
 		],
 	},
 	{
@@ -23,7 +27,7 @@ export function SiteFooter() {
 	return (
 		<footer className="overflow-hidden border-t border-foreground/10 pt-16">
 			<Container>
-				<div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]">
+				<div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr_1fr]">
 					<div>
 						<Link
 							to="/"
@@ -33,7 +37,7 @@ export function SiteFooter() {
 							{"Bonfire"}
 						</Link>
 						<p className="mt-4 max-w-xs text-foreground/60">
-							{"Ажлын дараах цагаараа бүтээдэг хүмүүсийн гал."}
+							{"Доторх галаа дүрэлзүүл"}
 						</p>
 					</div>
 					{columns.map((column) => (
@@ -42,16 +46,28 @@ export function SiteFooter() {
 								{column.title}
 							</h2>
 							<ul className="mt-4 space-y-3">
-								{column.links.map((link) => (
-									<li key={link.to}>
-										<Link
-											to={link.to}
-											className="text-lg font-medium text-foreground/80 transition-colors hover:text-foreground"
+								{column.links.map((link) =>
+									"to" in link ? (
+										<li key={link.label}>
+											<Link
+												to={link.to}
+												className="text-lg font-medium text-foreground/80 transition-colors hover:text-foreground"
+											>
+												{link.label}
+											</Link>
+										</li>
+									) : (
+										<li
+											key={link.label}
+											className="flex items-center gap-2 text-lg font-medium text-foreground/45"
 										>
 											{link.label}
-										</Link>
-									</li>
-								))}
+											<span className="rounded-full bg-flame px-2 py-0.5 font-hand text-xs text-ink">
+												{"Удахгүй"}
+											</span>
+										</li>
+									),
+								)}
 							</ul>
 						</nav>
 					))}

@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { seo } from "#/lib/seo";
 import { Container } from "@/components/container";
 import { FlameMark } from "@/components/flame-mark";
+import { seo } from "@/lib/seo";
 import { CallToAction } from "../-components/cta";
 import { CategoryFilter } from "./-components/category-filter";
 import { FeaturedPost } from "./-components/featured-post";
