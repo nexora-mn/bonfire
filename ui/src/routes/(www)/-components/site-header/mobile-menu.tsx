@@ -105,6 +105,22 @@ export function MobileMenu({ signedIn }: { signedIn: boolean }) {
               </span>
             </div>
             <Link
+              to="/ai"
+              onClick={close}
+              style={delay(5)}
+              className={cn(
+                rise,
+                "group flex items-center justify-between gap-4 border-b border-foreground/10 py-5",
+              )}
+            >
+              <span className="display-3 text-3xl">{"Хиймэл оюун"}</span>
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                aria-hidden="true"
+                className="size-6 shrink-0 text-flame transition-transform group-hover:translate-x-1"
+              />
+            </Link>
+            <Link
               to="/roadmap"
               onClick={close}
               style={delay(4)}
@@ -140,7 +156,7 @@ export function MobileMenu({ signedIn }: { signedIn: boolean }) {
 
           <div
             className={cn(rise, "mt-auto grid gap-3 pt-10")}
-            style={delay(5)}
+            style={delay(6)}
           >
             {signedIn ? (
               <Link

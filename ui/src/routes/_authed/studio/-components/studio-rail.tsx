@@ -5,6 +5,7 @@ import { cn } from "cn";
 import { buttonVariants } from "@/components/ui/button";
 import type { Creator } from "@/lib/api/creator";
 import { creatorUrl } from "@/lib/utils/url";
+import { RailFooter } from "../../-components/shell/rail-footer";
 
 export function StudioRail({ creator }: { creator: Creator }) {
 	return (
@@ -68,6 +69,7 @@ export function StudioRail({ creator }: { creator: Creator }) {
 					}
 				</p>
 			</section>
+			<RailFooter />
 		</>
 	);
 }

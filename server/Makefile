@@ -1,4 +1,4 @@
-.PHONY: run sqlc migration client docker
+.PHONY: run sqlc migration migrate-up client docker
 
 run:
 	encore run
@@ -8,6 +8,11 @@ sqlc:
 
 migration:
 	migrate create -ext sql -dir persistence/migrations -seq $(name)
+
+# Apply migrations to a self-hosted database; the Docker image doesn't run them.
+# make migrate-up DATABASE_URL='postgres://user:pass@host:5432/postgres?sslmode=require'
+migrate-up:
+	migrate -path persistence/migrations -database "$(DATABASE_URL)" up
 
 client:
 	encore gen client serve-c23i --lang=typescript --env=local --output=../ui/src/lib/api/client.gen.ts

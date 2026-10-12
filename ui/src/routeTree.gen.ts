@@ -22,6 +22,7 @@ import { Route as AuthedHomeRouteRouteImport } from './routes/_authed/home/route
 import { Route as AuthedStudioRouteRouteImport } from './routes/_authed/studio/route'
 import { Route as CCodeRouteImport } from './routes/c/$code'
 import { Route as authAuthConfirmRouteImport } from './routes/(auth)/auth/confirm'
+import { Route as wwwAiIndexRouteImport } from './routes/(www)/ai/index'
 import { Route as wwwBlogIndexRouteImport } from './routes/(www)/blog/index'
 import { Route as wwwBlogSlugRouteImport } from './routes/(www)/blog/$slug'
 import { Route as wwwQrCodeIndexRouteImport } from './routes/(www)/qr-code/index'
@@ -29,7 +30,7 @@ import { Route as wwwRoadmapIndexRouteImport } from './routes/(www)/roadmap/inde
 import { Route as AuthedHomeIndexRouteImport } from './routes/_authed/home/index'
 import { Route as AuthedHomeSupportsRouteImport } from './routes/_authed/home/supports'
 import { Route as AuthedStudioCreatorRouteRouteImport } from './routes/_authed/studio/_creator/route'
-import { Route as AuthedStudioBecomeRouteImport } from './routes/_authed/studio/become'
+import { Route as AuthedStudioCreateRouteImport } from './routes/_authed/studio/create'
 import { Route as authAuthOauthProviderRouteImport } from './routes/(auth)/auth/oauth.$provider'
 import { Route as AuthedHomeChangelogIndexRouteImport } from './routes/_authed/home/changelog/index'
 import { Route as AuthedHomeDiscoverIndexRouteImport } from './routes/_authed/home/discover/index'
@@ -106,6 +107,11 @@ const authAuthConfirmRoute = authAuthConfirmRouteImport.update({
   path: '/auth/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
+const wwwAiIndexRoute = wwwAiIndexRouteImport.update({
+  id: '/ai/',
+  path: '/ai/',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
 const wwwBlogIndexRoute = wwwBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -141,9 +147,9 @@ const AuthedStudioCreatorRouteRoute =
     id: '/_creator',
     getParentRoute: () => AuthedStudioRouteRoute,
   } as any)
-const AuthedStudioBecomeRoute = AuthedStudioBecomeRouteImport.update({
-  id: '/become',
-  path: '/become',
+const AuthedStudioCreateRoute = AuthedStudioCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => AuthedStudioRouteRoute,
 } as any)
 const authAuthOauthProviderRoute = authAuthOauthProviderRouteImport.update({
@@ -230,7 +236,8 @@ export interface FileRoutesByFullPath {
   '/auth/confirm': typeof authAuthConfirmRoute
   '/blog/$slug': typeof wwwBlogSlugRoute
   '/home/supports': typeof AuthedHomeSupportsRoute
-  '/studio/become': typeof AuthedStudioBecomeRoute
+  '/studio/create': typeof AuthedStudioCreateRoute
+  '/ai/': typeof wwwAiIndexRoute
   '/blog/': typeof wwwBlogIndexRoute
   '/qr-code/': typeof wwwQrCodeIndexRoute
   '/roadmap/': typeof wwwRoadmapIndexRoute
@@ -261,7 +268,8 @@ export interface FileRoutesByTo {
   '/auth/confirm': typeof authAuthConfirmRoute
   '/blog/$slug': typeof wwwBlogSlugRoute
   '/home/supports': typeof AuthedHomeSupportsRoute
-  '/studio/become': typeof AuthedStudioBecomeRoute
+  '/studio/create': typeof AuthedStudioCreateRoute
+  '/ai': typeof wwwAiIndexRoute
   '/blog': typeof wwwBlogIndexRoute
   '/qr-code': typeof wwwQrCodeIndexRoute
   '/roadmap': typeof wwwRoadmapIndexRoute
@@ -296,7 +304,8 @@ export interface FileRoutesById {
   '/(auth)/auth/confirm': typeof authAuthConfirmRoute
   '/(www)/blog/$slug': typeof wwwBlogSlugRoute
   '/_authed/home/supports': typeof AuthedHomeSupportsRoute
-  '/_authed/studio/become': typeof AuthedStudioBecomeRoute
+  '/_authed/studio/create': typeof AuthedStudioCreateRoute
+  '/(www)/ai/': typeof wwwAiIndexRoute
   '/(www)/blog/': typeof wwwBlogIndexRoute
   '/(www)/qr-code/': typeof wwwQrCodeIndexRoute
   '/(www)/roadmap/': typeof wwwRoadmapIndexRoute
@@ -330,7 +339,8 @@ export interface FileRouteTypes {
     | '/auth/confirm'
     | '/blog/$slug'
     | '/home/supports'
-    | '/studio/become'
+    | '/studio/create'
+    | '/ai/'
     | '/blog/'
     | '/qr-code/'
     | '/roadmap/'
@@ -361,7 +371,8 @@ export interface FileRouteTypes {
     | '/auth/confirm'
     | '/blog/$slug'
     | '/home/supports'
-    | '/studio/become'
+    | '/studio/create'
+    | '/ai'
     | '/blog'
     | '/qr-code'
     | '/roadmap'
@@ -395,7 +406,8 @@ export interface FileRouteTypes {
     | '/(auth)/auth/confirm'
     | '/(www)/blog/$slug'
     | '/_authed/home/supports'
-    | '/_authed/studio/become'
+    | '/_authed/studio/create'
+    | '/(www)/ai/'
     | '/(www)/blog/'
     | '/(www)/qr-code/'
     | '/(www)/roadmap/'
@@ -520,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(www)/ai/': {
+      id: '/(www)/ai/'
+      path: '/ai'
+      fullPath: '/ai/'
+      preLoaderRoute: typeof wwwAiIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
     '/(www)/blog/': {
       id: '/(www)/blog/'
       path: '/blog'
@@ -569,11 +588,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedStudioCreatorRouteRouteImport
       parentRoute: typeof AuthedStudioRouteRoute
     }
-    '/_authed/studio/become': {
-      id: '/_authed/studio/become'
-      path: '/become'
-      fullPath: '/studio/become'
-      preLoaderRoute: typeof AuthedStudioBecomeRouteImport
+    '/_authed/studio/create': {
+      id: '/_authed/studio/create'
+      path: '/create'
+      fullPath: '/studio/create'
+      preLoaderRoute: typeof AuthedStudioCreateRouteImport
       parentRoute: typeof AuthedStudioRouteRoute
     }
     '/(auth)/auth/oauth/$provider': {
@@ -666,6 +685,7 @@ declare module '@tanstack/react-router' {
 interface wwwRouteRouteChildren {
   wwwIndexRoute: typeof wwwIndexRoute
   wwwBlogSlugRoute: typeof wwwBlogSlugRoute
+  wwwAiIndexRoute: typeof wwwAiIndexRoute
   wwwBlogIndexRoute: typeof wwwBlogIndexRoute
   wwwQrCodeIndexRoute: typeof wwwQrCodeIndexRoute
   wwwRoadmapIndexRoute: typeof wwwRoadmapIndexRoute
@@ -674,6 +694,7 @@ interface wwwRouteRouteChildren {
 const wwwRouteRouteChildren: wwwRouteRouteChildren = {
   wwwIndexRoute: wwwIndexRoute,
   wwwBlogSlugRoute: wwwBlogSlugRoute,
+  wwwAiIndexRoute: wwwAiIndexRoute,
   wwwBlogIndexRoute: wwwBlogIndexRoute,
   wwwQrCodeIndexRoute: wwwQrCodeIndexRoute,
   wwwRoadmapIndexRoute: wwwRoadmapIndexRoute,
@@ -735,12 +756,12 @@ const AuthedStudioCreatorRouteRouteWithChildren =
 
 interface AuthedStudioRouteRouteChildren {
   AuthedStudioCreatorRouteRoute: typeof AuthedStudioCreatorRouteRouteWithChildren
-  AuthedStudioBecomeRoute: typeof AuthedStudioBecomeRoute
+  AuthedStudioCreateRoute: typeof AuthedStudioCreateRoute
 }
 
 const AuthedStudioRouteRouteChildren: AuthedStudioRouteRouteChildren = {
   AuthedStudioCreatorRouteRoute: AuthedStudioCreatorRouteRouteWithChildren,
-  AuthedStudioBecomeRoute: AuthedStudioBecomeRoute,
+  AuthedStudioCreateRoute: AuthedStudioCreateRoute,
 }
 
 const AuthedStudioRouteRouteWithChildren =

@@ -7,7 +7,7 @@ import { MobileMenu } from "./mobile-menu";
 import { ResourcesMenu } from "./resources-menu";
 
 const navLink =
-  "rounded-full px-4 py-2 text-[0.95rem] font-medium text-foreground/75 transition-colors hover:text-foreground data-[status=active]:text-foreground";
+  "rounded-full px-4 py-2 text-[0.95rem] font-medium uppercase text-foreground/75 transition-colors hover:text-foreground data-[status=active]:text-foreground";
 
 export function SiteHeader({ signedIn }: { signedIn: boolean }) {
   return (
@@ -23,6 +23,9 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
           </Link>
           <nav aria-label="Үндсэн цэс" className="hidden items-center md:flex">
             <ResourcesMenu className="flex" />
+            <Link to="/ai" className={navLink}>
+              {"Хиймэл оюун"}
+            </Link>
             <Link to="/roadmap" className={navLink}>
               {"Замын зураг"}
             </Link>

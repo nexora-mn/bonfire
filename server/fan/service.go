@@ -4,10 +4,10 @@ package fan
 import (
 	"context"
 
+	"encore.app/media"
 	"encore.app/persistence"
 	"encore.dev/beta/auth"
 	"encore.dev/beta/errs"
-	"encore.dev/storage/objects"
 	"encore.dev/storage/sqldb"
 	"encore.dev/types/uuid"
 )
@@ -17,11 +17,7 @@ type Service struct {
 	q *persistence.Queries
 }
 
-var (
-	db = sqldb.Named("bonfire")
-	// Images are uploaded by the creator service; fans only need their URLs.
-	media = objects.Named("creator-media")
-)
+var db = sqldb.Named("bonfire")
 
 func initService() (*Service, error) {
 	q, _ := persistence.Open(db)
@@ -32,7 +28,7 @@ func mediaURL(key *string) *string {
 	if key == nil {
 		return nil
 	}
-	u := media.PublicURL(*key).String()
+	u := media.PublicURL(*key)
 	return &u
 }
 

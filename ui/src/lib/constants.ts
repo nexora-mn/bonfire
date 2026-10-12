@@ -5,10 +5,12 @@
 
 export const SITE_NAME = "Bonfire";
 export const SITE_URL = (
-	import.meta.env.VITE_SITE_URL ?? "http://localhost:3000"
+  import.meta.env.VITE_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/$/, "");
+/** Shown in the app rails; bump with each changelog release. */
+export const APP_VERSION = "0.1.0";
 export const DEFAULT_DESCRIPTION =
-	"Ажлын дараах цагаараа бүтээдэг зүйлээ хуваалцаж, дэмжигчдээсээ сар бүр орлого ол.";
+  "Ажлын дараах цагаараа бүтээдэг зүйлээ хуваалцаж, дэмжигчдээсээ сар бүр орлого ол.";
 
 /** Fallback Encore API origin when API_URL isn't set (`encore run`). */
 export const DEFAULT_API_URL = "http://localhost:4000";
@@ -34,31 +36,31 @@ export const MAX_ABOUT_LENGTH = 5000;
 export const MAX_LINKS = 10;
 
 export const LINK_PLATFORMS = [
-	"website",
-	"facebook",
-	"instagram",
-	"x",
-	"youtube",
-	"tiktok",
-	"twitch",
-	"discord",
-	"github",
-	"other",
+  "website",
+  "facebook",
+  "instagram",
+  "x",
+  "youtube",
+  "tiktok",
+  "twitch",
+  "discord",
+  "github",
+  "other",
 ] as const;
 
 export type LinkPlatform = (typeof LINK_PLATFORMS)[number];
 
 export const PLATFORM_LABELS: Record<LinkPlatform, string> = {
-	website: "Вэбсайт",
-	facebook: "Facebook",
-	instagram: "Instagram",
-	x: "X",
-	youtube: "YouTube",
-	tiktok: "TikTok",
-	twitch: "Twitch",
-	discord: "Discord",
-	github: "GitHub",
-	other: "Бусад",
+  website: "Вэбсайт",
+  facebook: "Facebook",
+  instagram: "Instagram",
+  x: "X",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  twitch: "Twitch",
+  discord: "Discord",
+  github: "GitHub",
+  other: "Бусад",
 };
 
 // Money (whole tögrög)
@@ -80,10 +82,10 @@ export const MEDIA_KINDS = ["avatar", "cover", "post", "tier"] as const;
 export type MediaKind = (typeof MEDIA_KINDS)[number];
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export const IMAGE_TYPES = [
-	"image/jpeg",
-	"image/png",
-	"image/webp",
-	"image/gif",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
 ];
 /** Pixel size of downloaded QR code images. */
 export const QR_DOWNLOAD_SIZE = 1024;
@@ -91,35 +93,35 @@ export const QR_DOWNLOAD_SIZE = 1024;
 // Posts
 
 export const POST_VISIBILITY_LABELS = {
-	public: "Бүх хүнд",
-	members: "Зөвхөн гишүүдэд",
+  public: "Бүх хүнд",
+  members: "Зөвхөн гишүүдэд",
 } as const;
 
 // Payouts
 
 /** Bank codes mirror server/payout/bank.go. */
 export const BANK_LABELS = {
-	khan: "Хаан банк",
-	golomt: "Голомт банк",
-	tdb: "Худалдаа хөгжлийн банк",
-	xac: "Хас банк",
-	state: "Төрийн банк",
-	capitron: "Капитрон банк",
-	bogd: "Богд банк",
-	arig: "Ариг банк",
-	transbank: "Тээвэр хөгжлийн банк",
-	nibank: "Үндэсний хөрөнгө оруулалтын банк",
-	mbank: "М банк",
+  khan: "Хаан банк",
+  golomt: "Голомт банк",
+  tdb: "Худалдаа хөгжлийн банк",
+  xac: "Хас банк",
+  state: "Төрийн банк",
+  capitron: "Капитрон банк",
+  bogd: "Богд банк",
+  arig: "Ариг банк",
+  transbank: "Тээвэр хөгжлийн банк",
+  nibank: "Үндэсний хөрөнгө оруулалтын банк",
+  mbank: "М банк",
 } as const;
 
 export type BankCode = keyof typeof BANK_LABELS;
 export const BANK_CODES = Object.keys(BANK_LABELS) as [BankCode, ...BankCode[]];
 
 export const PAYOUT_STATUS_LABELS: Record<string, string> = {
-	pending: "Хүлээгдэж буй",
-	processing: "Шилжүүлж байна",
-	paid: "Шилжүүлсэн",
-	failed: "Амжилтгүй",
+  pending: "Хүлээгдэж буй",
+  processing: "Шилжүүлж байна",
+  paid: "Шилжүүлсэн",
+  failed: "Амжилтгүй",
 };
 
 // UI feedback

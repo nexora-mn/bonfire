@@ -1,7 +1,6 @@
 package creator
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -10,16 +9,13 @@ import (
 	"net/http"
 	"strings"
 
+	"encore.app/media"
 	"encore.app/persistence"
 	"encore.dev"
 	"encore.dev/beta/errs"
 	"encore.dev/rlog"
-	"encore.dev/storage/objects"
 	"encore.dev/types/uuid"
 )
-
-// media holds creator images: avatars, covers and post images.
-var media = objects.NewBucket("creator-media", objects.BucketConfig{Public: true})
 
 const maxImageBytes = 5 << 20
 
@@ -34,7 +30,7 @@ func mediaURL(key *string) *string {
 	if key == nil {
 		return nil
 	}
-	u := media.PublicURL(*key).String()
+	u := media.PublicURL(*key)
 	return &u
 }
 
@@ -91,12 +87,7 @@ func (s *Service) uploadMedia(req *http.Request) (*UploadResponse, error) {
 	}
 
 	key := mediaPrefix(c.ID, kind) + uuid.Must(uuid.NewV4()).String() + "." + ext
-	wr := media.Upload(ctx, key, objects.WithUploadAttrs(objects.UploadAttrs{ContentType: contentType}))
-	if _, err := io.Copy(wr, bytes.NewReader(data)); err != nil {
-		wr.Abort(err)
-		return nil, err
-	}
-	if err := wr.Close(); err != nil {
+	if err := media.Upload(ctx, key, contentType, data); err != nil {
 		return nil, err
 	}
 
@@ -113,10 +104,8 @@ func (s *Service) uploadMedia(req *http.Request) (*UploadResponse, error) {
 		return nil, err
 	}
 	deleteObject(ctx, old)
-	if kind == "avatar" || kind == "cover" {
-	}
 
-	return &UploadResponse{Key: key, URL: media.PublicURL(key).String()}, nil
+	return &UploadResponse{Key: key, URL: media.PublicURL(key)}, nil
 }
 
 // RemoveMedia clears the page's avatar or cover image.
@@ -158,7 +147,7 @@ func deleteObject(ctx context.Context, key *string) {
 	if key == nil || !strings.HasPrefix(*key, "creators/") {
 		return
 	}
-	if err := media.Remove(ctx, *key); err != nil && !errors.Is(err, objects.ErrObjectNotFound) {
+	if err := media.Remove(ctx, *key); err != nil {
 		rlog.Warn("failed to remove media", "key", *key, "err", err)
 	}
 }

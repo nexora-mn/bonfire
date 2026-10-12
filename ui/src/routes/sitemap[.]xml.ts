@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { sanity } from "@/lib/sanity";
 import { absoluteUrl } from "@/lib/utils/url";
 
-const staticPaths = ["/", "/blog", "/qr-code", "/roadmap"];
+const staticPaths = ["/", "/blog", "/qr-code", "/roadmap", "/ai"];
 
 const postsQuery = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
 	"slug": slug.current,

@@ -1,4 +1,5 @@
 import type { ExploreCreator } from "@/lib/api/fan";
+import { RailFooter } from "../../../-components/shell/rail-footer";
 import { RailSearch } from "./search";
 import { SuggestedCreators } from "./suggested-creators";
 
@@ -7,7 +8,7 @@ export function RightRail({ suggestions }: { suggestions: ExploreCreator[] }) {
 		<>
 			<RailSearch />
 			<SuggestedCreators creators={suggestions} />
-			<p className="px-4 text-xs text-muted-foreground">{"© Bonfire"}</p>
+			<RailFooter />
 		</>
 	);
 }

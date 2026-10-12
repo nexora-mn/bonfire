@@ -63,7 +63,7 @@ function HomeLayout() {
 			action={
 				creator
 					? { to: "/studio", label: "Студи", icon: SparklesIcon }
-					: { to: "/studio/become", label: "Бүтээгч болох", icon: SparklesIcon }
+					: { to: "/studio/create", label: "Бүтээгч болох", icon: SparklesIcon }
 			}
 			rightRail={<RightRail suggestions={suggestions} />}
 		>

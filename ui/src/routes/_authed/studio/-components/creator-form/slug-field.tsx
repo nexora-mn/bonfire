@@ -51,7 +51,7 @@ export function SlugField({
 			render={({ field, fieldState }) => (
 				<Field data-invalid={fieldState.invalid || availability === "taken"}>
 					<FieldLabel htmlFor="slug">{"Хуудасны хаяг"}</FieldLabel>
-					<div className="flex items-center rounded-2xl border border-transparent bg-input/50 transition-[color,box-shadow,background-color] focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/30 has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20">
+					<div className="flex h-9 items-center rounded-xl sunken transition-[color,box-shadow,background-color] focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/30 has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20">
 						<span className="pl-3 text-sm text-muted-foreground select-none">
 							{`${siteHost}/`}
 						</span>
@@ -62,7 +62,7 @@ export function SlugField({
 							spellCheck={false}
 							aria-invalid={fieldState.invalid}
 							onChange={(e) => field.onChange(e.target.value.toLowerCase())}
-							className="border-0! bg-transparent! pl-0.5 shadow-none focus-visible:ring-0"
+							className="h-full border-0! bg-transparent! pl-0.5 inset-shadow-none! focus-visible:ring-0 aria-invalid:ring-0"
 						/>
 					</div>
 					{fieldState.error ? (
