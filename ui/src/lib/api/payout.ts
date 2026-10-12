@@ -5,7 +5,6 @@ import { attempt, getApi } from "./server";
 
 export type Earnings = payout.Earnings;
 export type PayoutAccount = payout.Account;
-export type PayoutItem = payout.PayoutItem;
 
 export const fetchEarnings = createServerFn({ method: "GET" }).handler(
 	async () => {
@@ -14,14 +13,10 @@ export const fetchEarnings = createServerFn({ method: "GET" }).handler(
 	},
 );
 
-export const fetchPayouts = createServerFn({ method: "GET" }).handler(
+export const fetchPayoutAccount = createServerFn({ method: "GET" }).handler(
 	async () => {
 		const api = await getApi();
-		const [{ account }, { payouts }] = await Promise.all([
-			api.payout.GetAccount(),
-			api.payout.ListPayouts(),
-		]);
-		return { account, payouts };
+		return api.payout.GetAccount();
 	},
 );
 

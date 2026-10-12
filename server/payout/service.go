@@ -1,58 +1,28 @@
-// Package payout reports creator earnings, stores payout bank accounts and
-// runs the monthly payout workflow on DBOS, sending money through a bank's
-// corporate gateway (the sandbox until one is integrated).
+// Package payout reports creator earnings and stores the bank accounts
+// creators get paid to. Sending payouts isn't implemented yet.
 package payout
 
 import (
 	"context"
 	"time"
-	_ "time/tzdata" // DBOS resolves the schedule's IANA time zone
 
 	"encore.app/persistence"
 	"encore.dev/beta/auth"
 	"encore.dev/beta/errs"
-	"encore.dev/config"
 	"encore.dev/storage/sqldb"
 	"encore.dev/types/uuid"
-	"github.com/dbos-inc/dbos-transact-golang/dbos"
 )
-
-type Config struct {
-	// Corporate gateway that sends payouts; see newBank.
-	Bank config.String
-	// Platform fee in basis points (500 = 5%), taken from each payout.
-	FeeBps config.Int64
-	// Smallest transfer in tögrög; smaller balances wait for a later run.
-	MinPayout config.Int64
-}
-
-var cfg = config.Load[*Config]()
 
 //encore:service
 type Service struct {
-	q     *persistence.Queries
-	bank  bank
-	dbos  dbos.Context
-	queue dbos.Queue
+	q *persistence.Queries
 }
 
 var db = sqldb.Named("bonfire")
 
 func initService() (*Service, error) {
-	b, err := newBank(cfg.Bank())
-	if err != nil {
-		return nil, err
-	}
-	q, pool := persistence.Open(db)
-	s := &Service{q: q, bank: b}
-	if err := s.startDBOS(pool); err != nil {
-		return nil, err
-	}
-	return s, nil
-}
-
-func (s *Service) Shutdown(force context.Context) {
-	dbos.Shutdown(s.dbos, 10*time.Second)
+	q, _ := persistence.Open(db)
+	return &Service{q: q}, nil
 }
 
 // mine loads the signed-in user's creator page.

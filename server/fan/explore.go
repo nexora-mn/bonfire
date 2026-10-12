@@ -5,8 +5,6 @@ import (
 	"strings"
 
 	"encore.app/persistence"
-	"encore.app/search"
-	"encore.dev/rlog"
 )
 
 const explorePageSize = 24
@@ -19,10 +17,10 @@ type ExploreParams struct {
 }
 
 type ExploreCreator struct {
-	Slug          string  `json:"slug"`
-	DisplayName   string  `json:"displayName"`
-	AvatarURL     *string `json:"avatarUrl"`
-	About         string  `json:"about"`
+	Slug        string  `json:"slug"`
+	DisplayName string  `json:"displayName"`
+	AvatarURL   *string `json:"avatarUrl"`
+	About       string  `json:"about"`
 	CoverURL    *string `json:"coverUrl"`
 }
 
@@ -34,34 +32,14 @@ type ExploreResponse struct {
 // likeEscaper keeps user input from acting as ILIKE wildcards.
 var likeEscaper = strings.NewReplacer(`\`, `\\`, `%`, `\%`, `_`, `\_`)
 
-// Explore lists creators, most relevant (or most clicked, without a
-// query) first, from the search index. If search is down it falls back to
-// a plain name match in the database. Auth is optional.
+// Explore lists creators, optionally matching a name or page URL.
+// Auth is optional.
 //
 //encore:api public method=GET path=/explore
 func (s *Service) Explore(ctx context.Context, p *ExploreParams) (*ExploreResponse, error) {
 	page := max(p.Page, 0)
-	res, err := search.SearchCreators(ctx, &search.CreatorSearchParams{Q: p.Q, Page: page})
-	if err != nil {
-		rlog.Warn("explore: search unavailable, using database", "err", err)
-		return s.exploreDB(ctx, p.Q, page)
-	}
-	out := make([]ExploreCreator, len(res.Creators))
-	for i, c := range res.Creators {
-		out[i] = ExploreCreator{
-			Slug:          c.Slug,
-			DisplayName:   c.DisplayName,
-			AvatarURL:     c.AvatarURL,
-			About:         c.About,
-			CoverURL:      c.CoverURL,
-		}
-	}
-	return &ExploreResponse{Creators: out, HasMore: res.HasMore}, nil
-}
-
-func (s *Service) exploreDB(ctx context.Context, query string, page int) (*ExploreResponse, error) {
 	var q *string
-	if t := strings.TrimSpace(query); t != "" {
+	if t := strings.TrimSpace(p.Q); t != "" {
 		escaped := likeEscaper.Replace(t)
 		q = &escaped
 	}
@@ -80,11 +58,11 @@ func (s *Service) exploreDB(ctx context.Context, query string, page int) (*Explo
 	out := make([]ExploreCreator, len(rows))
 	for i, r := range rows {
 		out[i] = ExploreCreator{
-			Slug:          r.Slug,
-			DisplayName:   r.DisplayName,
-			AvatarURL:     mediaURL(r.AvatarKey),
-			About:         r.About,
-			CoverURL:      mediaURL(r.CoverKey),
+			Slug:        r.Slug,
+			DisplayName: r.DisplayName,
+			AvatarURL:   mediaURL(r.AvatarKey),
+			About:       r.About,
+			CoverURL:    mediaURL(r.CoverKey),
 		}
 	}
 	return &ExploreResponse{Creators: out, HasMore: hasMore}, nil

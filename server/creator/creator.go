@@ -5,7 +5,6 @@ import (
 	"slices"
 	"time"
 
-	"encore.app/events"
 	"encore.app/persistence"
 	"encore.dev/beta/errs"
 	"encore.dev/rlog"
@@ -155,7 +154,6 @@ func (s *Service) Become(ctx context.Context, p *ProfileParams) (*Creator, error
 		return nil, err
 	}
 	rlog.Info("creator created", "creator_id", created.ID, "slug", created.Slug)
-	events.CreatorUpdated(ctx, created.ID, false)
 	return s.toCreator(ctx, created)
 }
 
@@ -185,7 +183,6 @@ func (s *Service) UpdateProfile(ctx context.Context, p *ProfileParams) (*Creator
 	} else if err != nil {
 		return nil, err
 	}
-	events.CreatorUpdated(ctx, c.ID, false)
 	return s.toCreator(ctx, c)
 }
 
@@ -245,7 +242,6 @@ func (s *Service) UpdateOneTime(ctx context.Context, p *OneTimeSettings) (*Creat
 	if err != nil {
 		return nil, err
 	}
-	events.CreatorUpdated(ctx, c.ID, false)
 	return s.toCreator(ctx, c)
 }
 

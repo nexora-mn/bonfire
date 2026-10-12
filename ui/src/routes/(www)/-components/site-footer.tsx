@@ -5,7 +5,10 @@ import { FlameMark } from "@/components/flame-mark";
 const columns = [
 	{
 		title: "Bonfire",
-		links: [{ to: "/blog", label: "Блог" }],
+		links: [
+			{ to: "/blog", label: "Блог" },
+			{ to: "/roadmap", label: "Замын зураг" },
+		],
 	},
 	{
 		title: "Хэрэгсэл",

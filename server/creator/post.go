@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"encore.app/events"
 	"encore.app/persistence"
 	"encore.dev/beta/errs"
 	"encore.dev/types/uuid"
@@ -109,8 +108,6 @@ func (s *Service) CreatePost(ctx context.Context, p *PostParams) (*Post, error) 
 	if err != nil {
 		return nil, err
 	}
-	events.PostUpdated(ctx, row.ID, false)
-	events.CreatorUpdated(ctx, c.ID, true)
 	out := toPost(row)
 	return &out, nil
 }
@@ -146,7 +143,6 @@ func (s *Service) UpdatePost(ctx context.Context, id uuid.UUID, p *PostParams) (
 		return nil, err
 	}
 	deleteReplaced(ctx, old.ImageKey, p.ImageKey)
-	events.PostUpdated(ctx, id, false)
 	out := toPost(row)
 	return &out, nil
 }
@@ -166,7 +162,5 @@ func (s *Service) DeletePost(ctx context.Context, id uuid.UUID) error {
 		return err
 	}
 	deleteObject(ctx, imageKey)
-	events.PostUpdated(ctx, id, false)
-	events.CreatorUpdated(ctx, c.ID, true)
 	return nil
 }

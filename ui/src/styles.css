@@ -88,6 +88,7 @@
   --destructive: oklch(0.433 0.158 30.8);
   --border: oklch(0.9 0.015 60);
   --input: oklch(0.9 0.015 60);
+  --sink: oklch(0 0 0 / 8%);
   --ring: oklch(0.792 0.161 75.4);
   /* Fire ramp along the brand palette: flame tip down to rust. */
   --chart-1: oklch(0.792 0.161 75.4);
@@ -130,6 +131,7 @@
   --destructive: oklch(0.7 0.19 22);
   --border: oklch(0.96 0.03 60 / 10%);
   --input: oklch(0.96 0.03 60 / 15%);
+  --sink: oklch(0 0 0 / 40%);
   --ring: oklch(0.534 0.175 36.9);
   --chart-1: oklch(0.792 0.161 75.4);
   --chart-2: oklch(0.66 0.17 55);
@@ -168,6 +170,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
+  --sink: oklch(0 0 0 / 8%);
   --ring: oklch(0.792 0.161 75.4);
   --sidebar: var(--card);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -195,6 +198,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
+  --sink: oklch(0 0 0 / 40%);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -250,6 +254,12 @@
   to {
     visibility: visible;
   }
+}
+
+/* Fields sink into the page: the inverse of a button's ledge, shaded along
+   the top inner edge instead of below. */
+@utility sunken {
+  @apply border-2 border-transparent bg-input/60 inset-shadow-[0_3px_0_0_var(--sink)];
 }
 
 /* Editorial display type: heavy, tight, and large. */

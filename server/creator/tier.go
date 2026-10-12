@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"encore.app/events"
 	"encore.app/persistence"
 	"encore.dev/beta/errs"
 	"encore.dev/types/uuid"
@@ -120,7 +119,6 @@ func (s *Service) CreateTier(ctx context.Context, p *TierParams) (*Tier, error) 
 		return nil, err
 	}
 	// Tier names and prices are searchable.
-	events.CreatorUpdated(ctx, c.ID, false)
 	out := toTier(t)
 	return &out, nil
 }
@@ -159,7 +157,6 @@ func (s *Service) UpdateTier(ctx context.Context, id uuid.UUID, p *TierParams) (
 		return nil, err
 	}
 	deleteReplaced(ctx, old.ImageKey, p.ImageKey)
-	events.CreatorUpdated(ctx, c.ID, false)
 	out := toTier(t)
 	return &out, nil
 }
@@ -180,6 +177,5 @@ func (s *Service) DeleteTier(ctx context.Context, id uuid.UUID) error {
 		return err
 	}
 	deleteObject(ctx, imageKey)
-	events.CreatorUpdated(ctx, c.ID, false)
 	return nil
 }

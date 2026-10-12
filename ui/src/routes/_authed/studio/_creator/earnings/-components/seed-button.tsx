@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useRefresh } from "@/hooks/use-refresh";
 import { seedSupports } from "@/lib/api/payout";
 
-/** Dev only: fake supports so the earnings and payouts pages have data. */
+/** Dev only: fake supports so the earnings page has data. */
 export function SeedButton() {
 	const refresh = useRefresh();
 	const [pending, setPending] = useState(false);

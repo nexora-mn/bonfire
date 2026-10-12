@@ -36,7 +36,6 @@ export default class Client {
     public readonly creator: creator.ServiceClient
     public readonly fan: fan.ServiceClient
     public readonly payout: payout.ServiceClient
-    public readonly search: search.ServiceClient
     private readonly options: ClientOptions
     private readonly target: string
 
@@ -71,7 +70,6 @@ export default class Client {
         this.creator = new creator.ServiceClient(base)
         this.fan = new fan.ServiceClient(base)
         this.payout = new payout.ServiceClient(base)
-        this.search = new search.ServiceClient(base)
     }
 
     /**
@@ -596,9 +594,8 @@ export namespace fan {
         }
 
         /**
-         * Explore lists creators, most relevant (or most clicked, without a
-         * query) first, from the search index. If search is down it falls back to
-         * a plain name match in the database. Auth is optional.
+         * Explore lists creators, optionally matching a name or page URL.
+         * Auth is optional.
          */
         public async Explore(params: ExploreParams): Promise<ExploreResponse> {
             // Convert our params into the objects we need for the request
@@ -657,9 +654,8 @@ export namespace fan {
 }
 
 /**
- * Package payout reports creator earnings, stores payout bank accounts and
- * runs the monthly payout workflow on DBOS, sending money through a bank's
- * corporate gateway (the sandbox until one is integrated).
+ * Package payout reports creator earnings and stores the bank accounts
+ * creators get paid to. Sending payouts isn't implemented yet.
  */
 export namespace payout {
     export interface Account {
@@ -709,37 +705,6 @@ export namespace payout {
         membership: number
     }
 
-    export interface PayoutItem {
-        id: string
-        /**
-         * YYYY-MM.
-         */
-        month: string
-
-        /**
-         * Earnings taken from the balance; Fee is the platform's share and
-         * Amount (Gross - Fee) is what was sent.
-         */
-        gross: number
-
-        fee: number
-        amount: number
-        /**
-         * pending, processing, paid or failed. A failed payout's gross goes back
-         * into the balance for the next run.
-         */
-        status: string
-
-        sandbox: boolean
-        bankCode: string
-        accountNumber: string
-        processedAt: string
-    }
-
-    export interface PayoutList {
-        payouts: PayoutItem[]
-    }
-
     export interface SeedResult {
         inserted: number
     }
@@ -761,7 +726,6 @@ export namespace payout {
             this.baseClient = baseClient
             this.GetAccount = this.GetAccount.bind(this)
             this.GetEarnings = this.GetEarnings.bind(this)
-            this.ListPayouts = this.ListPayouts.bind(this)
             this.SaveAccount = this.SaveAccount.bind(this)
             this.SeedSupports = this.SeedSupports.bind(this)
         }
@@ -785,15 +749,6 @@ export namespace payout {
         }
 
         /**
-         * ListPayouts returns the creator's last 24 monthly payouts.
-         */
-        public async ListPayouts(): Promise<PayoutList> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/creator/me/payouts`)
-            return await resp.json() as PayoutList
-        }
-
-        /**
          * SaveAccount sets where the creator's payouts are sent.
          */
         public async SaveAccount(params: AccountParams): Promise<AccountResponse> {
@@ -812,379 +767,6 @@ export namespace payout {
             // Now make the actual call to the API
             const resp = await this.baseClient.callTypedAPI("POST", `/dev/seed-supports`)
             return await resp.json() as SeedResult
-        }
-    }
-}
-
-/**
- * Package search keeps creators and posts in Typesense and serves search,
- * autocomplete and recommendations from it.
- * 
- * Postgres stays the source of truth. The creator and fan services publish
- * change events (package events); this service re-reads the row and writes
- * the search document. A nightly reindex repairs anything an event missed.
- */
-export namespace search {
-    export interface ClickParams {
-        /**
-         * "creator" or "post".
-         */
-        kind: string
-
-        /**
-         * The hit's id.
-         */
-        id: string
-    }
-
-    export interface CreatorHit {
-        id: string
-        slug: string
-        displayName: string
-        about: string
-        avatarUrl: string
-        coverUrl: string
-        /**
-         * Cheapest active membership tier in MNT; 0 when there are no tiers.
-         */
-        minTierPrice: number
-
-        postCount: number
-        /**
-         * Matched text keyed by field (displayName, slug, about). HTML-escaped,
-         * with matches wrapped in <mark>, so it can be rendered as HTML.
-         */
-        highlights: { [key: string]: string }
-    }
-
-    export interface CreatorList {
-        creators: CreatorHit[]
-    }
-
-    export interface CreatorResults {
-        creators: CreatorHit[]
-        found: number
-        hasMore: boolean
-        /**
-         * Counts per facet value. Each facet ignores its own filter, so picking
-         * one platform still shows how many creators the others have.
-         */
-        facets: Facet[]
-    }
-
-    export interface CreatorSearchParams {
-        /**
-         * Matches names, page URLs, tier names and about text, with typo
-         * tolerance and Mongolian/English synonyms. Empty lists everyone.
-         */
-        Q: string
-
-        /**
-         * Link platforms (e.g. "youtube"); creators with any of them match.
-         */
-        Platforms: string[]
-
-        /**
-         * Only creators with membership tiers.
-         */
-        HasTiers: boolean
-
-        /**
-         * Only creators accepting one-time support.
-         */
-        OneTime: boolean
-
-        /**
-         * Cheapest-tier band: "under10k", "10k-50k" or "over50k".
-         */
-        Price: string
-
-        /**
-         * "relevance" (default), "popular", "newest" or "active".
-         */
-        Sort: string
-
-        /**
-         * Zero-based page number.
-         */
-        Page: number
-    }
-
-    export interface CreatorSummary {
-        slug: string
-        displayName: string
-        avatarUrl: string
-    }
-
-    export interface Facet {
-        field: string
-        values: FacetValue[]
-    }
-
-    export interface FacetValue {
-        value: string
-        count: number
-    }
-
-    export interface PopularQueries {
-        /**
-         * Most searched queries first, aggregated by Typesense analytics.
-         */
-        queries: string[]
-    }
-
-    export interface PostHit {
-        id: string
-        creator: CreatorSummary
-        title: string
-        /**
-         * The part of the body around the match, or its start. HTML-escaped,
-         * matches wrapped in <mark>. Empty for locked posts.
-         */
-        snippet: string
-
-        imageUrl: string
-        visibility: string
-        locked: boolean
-        likeCount: number
-        /**
-         * Whether the signed-in viewer liked it; false when anonymous.
-         */
-        liked: boolean
-
-        createdAt: string
-        /**
-         * Matched text keyed by field (title, body), like CreatorHit.Highlights.
-         */
-        highlights: { [key: string]: string }
-    }
-
-    export interface PostList {
-        posts: PostHit[]
-    }
-
-    export interface PostResults {
-        posts: PostHit[]
-        found: number
-        hasMore: boolean
-        facets: Facet[]
-    }
-
-    export interface PostSearchParams {
-        /**
-         * Matches titles and the bodies of public posts. Empty lists all posts.
-         */
-        Q: string
-
-        /**
-         * Only posts by the creator with this slug.
-         */
-        Creator: string
-
-        /**
-         * "public" or "members".
-         */
-        Visibility: string
-
-        /**
-         * Only posts with an image.
-         */
-        HasImage: boolean
-
-        /**
-         * "relevance" (default), "newest" or "likes".
-         */
-        Sort: string
-
-        /**
-         * Zero-based page number.
-         */
-        Page: number
-    }
-
-    export interface Recommendations {
-        creators: CreatorHit[]
-        posts: PostHit[]
-    }
-
-    export interface SearchParams {
-        Q: string
-    }
-
-    export interface SearchResponse {
-        creators: CreatorHit[]
-        creatorsFound: number
-        posts: PostHit[]
-        postsFound: number
-    }
-
-    export interface SuggestParams {
-        /**
-         * What the user has typed so far.
-         */
-        Q: string
-    }
-
-    export interface SuggestResponse {
-        suggestions: Suggestion[]
-    }
-
-    export interface Suggestion {
-        /**
-         * "query" (a popular search to run) or "creator" (a page to open).
-         */
-        kind: string
-
-        /**
-         * Text to search for when picked; the creator's name for creators.
-         */
-        text: string
-
-        /**
-         * Text with the typed prefix wrapped in <mark>, HTML-escaped.
-         */
-        highlighted: string
-
-        /**
-         * Set for creator suggestions.
-         */
-        creator: CreatorSummary
-    }
-
-    export class ServiceClient {
-        private baseClient: BaseClient
-
-        constructor(baseClient: BaseClient) {
-            this.baseClient = baseClient
-            this.Click = this.Click.bind(this)
-            this.Popular = this.Popular.bind(this)
-            this.Recommend = this.Recommend.bind(this)
-            this.Search = this.Search.bind(this)
-            this.SearchCreators = this.SearchCreators.bind(this)
-            this.SearchPosts = this.SearchPosts.bind(this)
-            this.SimilarCreators = this.SimilarCreators.bind(this)
-            this.SimilarPosts = this.SimilarPosts.bind(this)
-            this.Suggest = this.Suggest.bind(this)
-        }
-
-        /**
-         * Click records that a search or recommendation result was opened.
-         * Typesense counts clicks into the document's popularity, which ranks
-         * often-picked results higher. Auth is optional.
-         */
-        public async Click(params: ClickParams): Promise<void> {
-            await this.baseClient.callTypedAPI("POST", `/search/clicks`, JSON.stringify(params))
-        }
-
-        /**
-         * Popular lists trending searches, e.g. for an empty search box.
-         */
-        public async Popular(): Promise<PopularQueries> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/search/popular`)
-            return await resp.json() as PopularQueries
-        }
-
-        /**
-         * Recommend suggests creators and posts to read. For signed-in users with
-         * likes it ranks by closeness to the average meaning of what they liked,
-         * leaving out posts they already liked. Everyone else gets what's popular.
-         */
-        public async Recommend(): Promise<Recommendations> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/recommendations`)
-            return await resp.json() as Recommendations
-        }
-
-        /**
-         * Search returns the top creators and posts for a query in one round trip,
-         * for an "all results" page; follow up with /search/creators or
-         * /search/posts for filters and more pages. Auth is optional.
-         */
-        public async Search(params: SearchParams): Promise<SearchResponse> {
-            // Convert our params into the objects we need for the request
-            const query = makeRecord<string, string | string[]>({
-                q: params.Q,
-            })
-
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/search`, undefined, {query})
-            return await resp.json() as SearchResponse
-        }
-
-        /**
-         * SearchCreators finds creators with filters, facets and sorting.
-         */
-        public async SearchCreators(params: CreatorSearchParams): Promise<CreatorResults> {
-            // Convert our params into the objects we need for the request
-            const query = makeRecord<string, string | string[]>({
-                hasTiers: String(params.HasTiers),
-                oneTime:  String(params.OneTime),
-                page:     String(params.Page),
-                platform: params.Platforms.map((v) => v),
-                price:    params.Price,
-                q:        params.Q,
-                sort:     params.Sort,
-            })
-
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/search/creators`, undefined, {query})
-            return await resp.json() as CreatorResults
-        }
-
-        /**
-         * SearchPosts finds posts. Members-only posts match on their title only
-         * and come back locked. Auth is optional; signed-in viewers see which
-         * posts they liked.
-         */
-        public async SearchPosts(params: PostSearchParams): Promise<PostResults> {
-            // Convert our params into the objects we need for the request
-            const query = makeRecord<string, string | string[]>({
-                creator:    params.Creator,
-                hasImage:   String(params.HasImage),
-                page:       String(params.Page),
-                q:          params.Q,
-                sort:       params.Sort,
-                visibility: params.Visibility,
-            })
-
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/search/posts`, undefined, {query})
-            return await resp.json() as PostResults
-        }
-
-        /**
-         * SimilarCreators returns creators like the given one: nearest by meaning
-         * when embeddings are on, otherwise by shared words in their about text.
-         */
-        public async SimilarCreators(slug: string): Promise<CreatorList> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/creators/${encodeURIComponent(slug)}/similar`)
-            return await resp.json() as CreatorList
-        }
-
-        /**
-         * SimilarPosts returns posts like the given one, from any creator.
-         */
-        public async SimilarPosts(id: string): Promise<PostList> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/posts/${encodeURIComponent(id)}/similar`)
-            return await resp.json() as PostList
-        }
-
-        /**
-         * Suggest powers search-as-you-type: popular past searches and matching
-         * creators, ranked together in one list by a union search.
-         */
-        public async Suggest(params: SuggestParams): Promise<SuggestResponse> {
-            // Convert our params into the objects we need for the request
-            const query = makeRecord<string, string | string[]>({
-                q: params.Q,
-            })
-
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("GET", `/search/suggest`, undefined, {query})
-            return await resp.json() as SuggestResponse
         }
     }
 }

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "metadata": {
+    "app_id": "bonfire",
+    "env_name": "production",
+    "env_type": "production",
+    "cloud": "aws",
+    "base_url": "https://api.bonfire.mn"
+  },
+  "graceful_shutdown": {
+    "total": 30
+  },
+  "sql_servers": [
+    {
+      "host": "aws-0-ap-northeast-1.pooler.supabase.com:5432",
+      "databases": {
+        "bonfire": {
+          "name": "postgres",
+          "username": "postgres.ehgldfpwbwvmhkrwwpck",
+          "password": {
+            "$env": "DB_PASSWORD"
+          },
+          "max_connections": 20
+        }
+      }
+    }
+  ],
+  "object_storage": [
+    {
+      "type": "s3",
+      "region": "ap-northeast-1",
+      "endpoint": "https://ehgldfpwbwvmhkrwwpck.storage.supabase.co/storage/v1/s3",
+      "access_key_id": "96338491c7250d9a432ea7014ab0ab03",
+      "secret_access_key": {
+        "$env": "STORAGE_SECRET_ACCESS_KEY"
+      },
+      "buckets": {
+        "creator-media": {
+          "name": "creator-media",
+          "public_base_url": "https://ehgldfpwbwvmhkrwwpck.supabase.co/storage/v1/object/public/creator-media"
+        }
+      }
+    }
+  ],
+  "secrets": {
+    "SUPABASE_URL": {
+      "$env": "SUPABASE_URL"
+    }
+  }
+}

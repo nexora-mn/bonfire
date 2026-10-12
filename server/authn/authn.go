@@ -15,8 +15,8 @@ import (
 )
 
 var secrets struct {
-	// SupabaseURL is the project URL, e.g. https://<ref>.supabase.co.
-	SupabaseURL string
+	// SUPABASE_URL is the project URL, e.g. https://<ref>.supabase.co.
+	SUPABASE_URL string
 }
 
 // UserData is available in auth endpoints via auth.Data().(*authn.UserData).
@@ -49,7 +49,7 @@ type Service struct {
 }
 
 func initService() (*Service, error) {
-	base := strings.TrimRight(secrets.SupabaseURL, "/")
+	base := strings.TrimRight(secrets.SUPABASE_URL, "/")
 
 	// Keys are cached and refreshed in the background, so verification is
 	// local; an unknown kid (key rotation) triggers a rate-limited refetch.

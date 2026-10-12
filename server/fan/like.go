@@ -3,7 +3,6 @@ package fan
 import (
 	"context"
 
-	"encore.app/events"
 	"encore.app/persistence"
 	"encore.dev/beta/errs"
 	"encore.dev/types/uuid"
@@ -52,6 +51,5 @@ func (s *Service) setLike(ctx context.Context, id uuid.UUID, like bool) (*LikeSt
 	if err != nil {
 		return nil, err
 	}
-	events.PostUpdated(ctx, id, true)
 	return &LikeState{Liked: like, LikeCount: n}, nil
 }

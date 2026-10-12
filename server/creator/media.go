@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"strings"
 
-	"encore.app/events"
 	"encore.app/persistence"
 	"encore.dev"
 	"encore.dev/beta/errs"
@@ -115,7 +114,6 @@ func (s *Service) uploadMedia(req *http.Request) (*UploadResponse, error) {
 	}
 	deleteObject(ctx, old)
 	if kind == "avatar" || kind == "cover" {
-		events.CreatorUpdated(ctx, c.ID, false)
 	}
 
 	return &UploadResponse{Key: key, URL: media.PublicURL(key).String()}, nil
@@ -144,7 +142,6 @@ func (s *Service) RemoveMedia(ctx context.Context, kind string) (*Creator, error
 		return nil, err
 	}
 	deleteObject(ctx, old)
-	events.CreatorUpdated(ctx, c.ID, false)
 	return s.toCreator(ctx, c)
 }
 

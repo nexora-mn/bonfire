@@ -25,6 +25,7 @@ import { Route as authAuthConfirmRouteImport } from './routes/(auth)/auth/confir
 import { Route as wwwBlogIndexRouteImport } from './routes/(www)/blog/index'
 import { Route as wwwBlogSlugRouteImport } from './routes/(www)/blog/$slug'
 import { Route as wwwQrCodeIndexRouteImport } from './routes/(www)/qr-code/index'
+import { Route as wwwRoadmapIndexRouteImport } from './routes/(www)/roadmap/index'
 import { Route as AuthedHomeIndexRouteImport } from './routes/_authed/home/index'
 import { Route as AuthedHomeSupportsRouteImport } from './routes/_authed/home/supports'
 import { Route as AuthedStudioCreatorRouteRouteImport } from './routes/_authed/studio/_creator/route'
@@ -118,6 +119,11 @@ const wwwBlogSlugRoute = wwwBlogSlugRouteImport.update({
 const wwwQrCodeIndexRoute = wwwQrCodeIndexRouteImport.update({
   id: '/qr-code/',
   path: '/qr-code/',
+  getParentRoute: () => wwwRouteRoute,
+} as any)
+const wwwRoadmapIndexRoute = wwwRoadmapIndexRouteImport.update({
+  id: '/roadmap/',
+  path: '/roadmap/',
   getParentRoute: () => wwwRouteRoute,
 } as any)
 const AuthedHomeIndexRoute = AuthedHomeIndexRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/studio/become': typeof AuthedStudioBecomeRoute
   '/blog/': typeof wwwBlogIndexRoute
   '/qr-code/': typeof wwwQrCodeIndexRoute
+  '/roadmap/': typeof wwwRoadmapIndexRoute
   '/home/': typeof AuthedHomeIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
   '/home/changelog/': typeof AuthedHomeChangelogIndexRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/studio/become': typeof AuthedStudioBecomeRoute
   '/blog': typeof wwwBlogIndexRoute
   '/qr-code': typeof wwwQrCodeIndexRoute
+  '/roadmap': typeof wwwRoadmapIndexRoute
   '/home': typeof AuthedHomeIndexRoute
   '/auth/oauth/$provider': typeof authAuthOauthProviderRoute
   '/home/changelog': typeof AuthedHomeChangelogIndexRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/_authed/studio/become': typeof AuthedStudioBecomeRoute
   '/(www)/blog/': typeof wwwBlogIndexRoute
   '/(www)/qr-code/': typeof wwwQrCodeIndexRoute
+  '/(www)/roadmap/': typeof wwwRoadmapIndexRoute
   '/_authed/home/': typeof AuthedHomeIndexRoute
   '/(auth)/auth/oauth/$provider': typeof authAuthOauthProviderRoute
   '/_authed/home/changelog/': typeof AuthedHomeChangelogIndexRoute
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/studio/become'
     | '/blog/'
     | '/qr-code/'
+    | '/roadmap/'
     | '/home/'
     | '/auth/oauth/$provider'
     | '/home/changelog/'
@@ -354,6 +364,7 @@ export interface FileRouteTypes {
     | '/studio/become'
     | '/blog'
     | '/qr-code'
+    | '/roadmap'
     | '/home'
     | '/auth/oauth/$provider'
     | '/home/changelog'
@@ -387,6 +398,7 @@ export interface FileRouteTypes {
     | '/_authed/studio/become'
     | '/(www)/blog/'
     | '/(www)/qr-code/'
+    | '/(www)/roadmap/'
     | '/_authed/home/'
     | '/(auth)/auth/oauth/$provider'
     | '/_authed/home/changelog/'
@@ -529,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof wwwQrCodeIndexRouteImport
       parentRoute: typeof wwwRouteRoute
     }
+    '/(www)/roadmap/': {
+      id: '/(www)/roadmap/'
+      path: '/roadmap'
+      fullPath: '/roadmap/'
+      preLoaderRoute: typeof wwwRoadmapIndexRouteImport
+      parentRoute: typeof wwwRouteRoute
+    }
     '/_authed/home/': {
       id: '/_authed/home/'
       path: '/'
@@ -649,6 +668,7 @@ interface wwwRouteRouteChildren {
   wwwBlogSlugRoute: typeof wwwBlogSlugRoute
   wwwBlogIndexRoute: typeof wwwBlogIndexRoute
   wwwQrCodeIndexRoute: typeof wwwQrCodeIndexRoute
+  wwwRoadmapIndexRoute: typeof wwwRoadmapIndexRoute
 }
 
 const wwwRouteRouteChildren: wwwRouteRouteChildren = {
@@ -656,6 +676,7 @@ const wwwRouteRouteChildren: wwwRouteRouteChildren = {
   wwwBlogSlugRoute: wwwBlogSlugRoute,
   wwwBlogIndexRoute: wwwBlogIndexRoute,
   wwwQrCodeIndexRoute: wwwQrCodeIndexRoute,
+  wwwRoadmapIndexRoute: wwwRoadmapIndexRoute,
 }
 
 const wwwRouteRouteWithChildren = wwwRouteRoute._addFileChildren(
