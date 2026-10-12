@@ -11,7 +11,7 @@ function WwwLayout() {
 	return (
 		<div id="top" className="dark min-h-svh bg-background text-foreground">
 			<SiteHeader signedIn={!!user} />
-			{/* <SmoothScroll /> */}
+			<SmoothScroll />
 			<div id="smooth-wrapper">
 				<div id="smooth-content" className="bg-background">
 					<main>

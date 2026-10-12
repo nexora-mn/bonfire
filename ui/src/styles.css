@@ -49,12 +49,13 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --color-ember: var(--primary);
   /*
    * Brand palette (coolors.co/palette/220901-621708-941b0c-bc3908-f6aa1c):
    * flame #F6AA1C, ember #BC3908, red #941B0C, rust #621708, ink #220901.
    */
   --color-flame: oklch(0.792 0.161 75.4);
+  /* Fixed, unlike primary, so flame buttons keep a darker ledge in dark mode. */
+  --color-ember: oklch(0.534 0.175 36.9);
   /* Bright tints for doodle cards; doodles are inked, so they stay light. */
   --color-spark: oklch(0.9 0.15 95);
   --color-amber: oklch(0.82 0.16 72);
@@ -148,7 +149,6 @@
 /*
  * Dashboard: shadcn's neutral palette with the brand flame as primary. Set on
  * <html> via :has() so portaled menus, tooltips and sheets pick it up too.
- * The bevel ember stays a deeper shade, so flame buttons keep their ledge.
  */
 :root:has(.dashboard) {
   --background: oklch(1 0 0);
@@ -177,7 +177,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.792 0.161 75.4);
-  --color-ember: oklch(0.534 0.175 36.9);
 }
 
 .dark:has(.dashboard) {
@@ -200,7 +199,6 @@
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --color-ember: oklch(0.534 0.175 36.9);
 }
 
 @layer base {

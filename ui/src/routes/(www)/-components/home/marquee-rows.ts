@@ -3,8 +3,8 @@ import type { MarqueeRow } from "../marquee";
 export const homeMarqueeRows: MarqueeRow[] = [
 	{
 		words: ["Бичих", "Хөгжим", "Бүжиг", "Зураг", "Видео", "Подкаст"],
-		className: "-rotate-2 bg-flame text-ink",
-		star: "text-ink/40",
+		className: "-rotate-2 bg-ink text-cream",
+		star: "text-flame",
 		reverse: false,
 	},
 	{

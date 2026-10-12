@@ -21,7 +21,9 @@ export function PassionWall() {
 					const track = root?.querySelector<HTMLElement>("[data-track]");
 					if (!root || !rail || !track) return;
 					const distance = () => track.scrollWidth - rail.clientWidth;
-					gsap.set(rail, { overflowX: "hidden" });
+					// The track moves by transform here, so the rail stops being a
+					// scroller; otherwise the swinging cards make it scroll vertically.
+					gsap.set(rail, { overflow: "visible" });
 
 					const tl = gsap.timeline({
 						defaults: { ease: "none" },
@@ -111,7 +113,7 @@ export function PassionWall() {
 
 			<div
 				data-rail
-				className="mt-12 snap-x snap-mandatory overflow-x-auto pb-4 [scrollbar-width:none] lg:mt-14"
+				className="mt-12 snap-x snap-mandatory overflow-x-auto overflow-y-hidden pb-4 [scrollbar-width:none] lg:mt-14"
 			>
 				<ul
 					data-track
